@@ -20,8 +20,11 @@ import com.intellij.psi.TokenType;
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 
+
+TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
+NAT=-[:digit:]+ | [:digit:]+
+
 COLUMN=":"
-DOUBLE_QUOTED_STRING=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 EQUAL="="
 FALSE="false"
 ID=[:jletter:] [:jletterdigit:]*
@@ -47,7 +50,8 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 
 <YYINITIAL> {
     // literals
-    {DOUBLE_QUOTED_STRING}    { yybegin(YYINITIAL); return MotokoTypes.STRING; }
+    {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
+    {NAT}                     { yybegin(YYINITIAL); return MotokoTypes.NAT; }
 
     // keywords
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }

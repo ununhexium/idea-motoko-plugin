@@ -84,6 +84,12 @@ pat_plain ::=
 // TODO support for types <dec_var> ::= VAR ID (COLUMN <typ>)? EQUAL <lit>
 dec_var ::= VAR ID EQUAL lit
 
-lit ::= NULL | bool
+lit ::=
+    NULL
+  | bool
+  | NAT
+//    <float>
+//    <char>
+  | TEXT
 
 bool ::= TRUE | FALSE
