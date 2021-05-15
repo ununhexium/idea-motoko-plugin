@@ -1,0 +1,48 @@
+<!-- Copyright 2000-2020 JetBrains s.r.o. and other contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file. -->
+
+<idea-plugin>
+
+    <!-- Unique id for this plugin. Must stay constant for the life of the plugin. -->
+    <id>net.lab0.dfinity.motoko</id>
+
+    <!-- Text to display as name on Preferences/Settings | Plugin page -->
+    <name>Motoko support</name>
+
+    <!-- Product and plugin compatibility requirements -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Text to display as description on Preferences/Settings | Plugin page -->
+    <description>
+        <![CDATA[
+            Adds support for the Motoko programming language.
+        ]]>
+    </description>
+    <change-notes>
+        <![CDATA[
+            <ul>
+                <li><b>0.0.0</b>Initialization.</li>
+            </ul>
+        ]]>
+    </change-notes>
+
+    <!-- Text to display as company information on Preferences/Settings | Plugin page -->
+    <vendor url="https://www.linkedin.com/in/christophe-loiseau-it/">Christophe Loiseau</vendor>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="Motoko File"
+                  implementationClass="org.intellij.sdk.language.MotokoFileType"
+                  fieldName="INSTANCE"
+                  language="Motoko"
+                  extensions="mo"/>
+        <!--
+          Only required for versions of the IntelliJ Platform prior to v2019.2.
+          Use 'com.intellij.fileTypeFactory' extension point INSTEAD of above 'com.intellij.fileType'.
+          <fileTypeFactory implementation="org.intellij.sdk.language.SimpleFileTypeFactory"/>
+        -->
+        <lang.parserDefinition language="Motoko"
+                               implementationClass="org.intellij.sdk.language.MotokoParserDefinition"/>
+
+        <lang.commenter language="Motoko" implementationClass="org.intellij.sdk.language.MotokoCommenter"/>
+    </extensions>
+
+</idea-plugin>

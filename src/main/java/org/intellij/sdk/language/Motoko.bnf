@@ -1,0 +1,30 @@
+
+{
+  parserClass="org.intellij.sdk.language.parser.MotokoParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Motoko"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.intellij.sdk.language.psi"
+  psiImplPackage="org.intellij.sdk.language.psi.impl"
+
+  elementTypeHolderClass="org.intellij.sdk.language.psi.MotokoTypes"
+  elementTypeClass="org.intellij.sdk.language.psi.MotokoElementType"
+  tokenTypeClass="org.intellij.sdk.language.psi.MotokoTokenType"
+
+  psiImplUtilClass="org.intellij.sdk.language.psi.impl.MotokoPsiImplUtil"
+}
+
+motokoFile ::= item_*
+
+private item_ ::= (imp|dec|CRLF)
+
+imp ::= IMPORT ID? EQUAL? STRING SEMI
+
+dec ::= dec_var
+
+// TODO support for types <dec_var> ::= VAR ID (COLUMN <typ>)? EQUAL <lit>
+dec_var ::= VAR ID EQUAL lit SEMI
+
+lit ::= NULL
