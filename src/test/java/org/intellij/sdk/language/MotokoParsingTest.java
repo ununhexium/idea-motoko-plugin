@@ -1,7 +1,9 @@
 package org.intellij.sdk.language;
 
 import com.intellij.testFramework.ParsingTestCase;
+import org.junit.Ignore;
 
+@Ignore("Need to write all the grammar first")
 public class MotokoParsingTest extends ParsingTestCase {
 
     public MotokoParsingTest() {
@@ -23,7 +25,12 @@ public class MotokoParsingTest extends ParsingTestCase {
     public void testDeclareMultipleVariables() {
         doTest(true);
     }
-    
+
+    public void testImportsMustBeAtTheBeginning() {
+        doTest(false, false);
+
+    }
+
     /**
      * @return path to test data file directory relative to root of this module.
      */

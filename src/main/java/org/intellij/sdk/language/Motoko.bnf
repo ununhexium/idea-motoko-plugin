@@ -1,4 +1,3 @@
-
 {
   parserClass="org.intellij.sdk.language.parser.MotokoParser"
 
@@ -16,16 +15,20 @@
   psiImplUtilClass="org.intellij.sdk.language.psi.impl.MotokoPsiImplUtil"
 }
 
-motokoFile ::= item_*
+motokoFile ::= prog
 
-private item_ ::= (imp|dec|CRLF)
+prog::= imp_list* dec_list*
 
-imp ::= IMPORT ID? EQUAL? STRING SEMI
+imp_list ::= imp SEMI imp_list*
+
+imp ::= IMPORT ID? EQUAL? STRING
+
+private dec_list ::= dec SEMI dec_list*
 
 dec ::= dec_var
 
 // TODO support for types <dec_var> ::= VAR ID (COLUMN <typ>)? EQUAL <lit>
-dec_var ::= VAR ID EQUAL lit SEMI
+dec_var ::= VAR ID EQUAL lit
 
 lit ::= NULL | bool
 
