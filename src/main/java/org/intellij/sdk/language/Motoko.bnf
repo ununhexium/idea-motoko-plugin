@@ -27,4 +27,6 @@ dec ::= dec_var
 // TODO support for types <dec_var> ::= VAR ID (COLUMN <typ>)? EQUAL <lit>
 dec_var ::= VAR ID EQUAL lit SEMI
 
-lit ::= NULL
+lit ::= NULL | bool
+
+bool ::= TRUE | FALSE

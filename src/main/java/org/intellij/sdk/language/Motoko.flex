@@ -20,14 +20,16 @@ import com.intellij.psi.TokenType;
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 
+COLUMN=":"
 DOUBLE_QUOTED_STRING=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 EQUAL="="
-SEMI=";"
-COLUMN=":"
+FALSE="false"
+ID=[:jletter:] [:jletterdigit:]*
 IMPORT="import"
 NULL="null"
+SEMI=";"
+TRUE="true"
 VAR="var"
-ID=[:jletter:] [:jletterdigit:]*
 
 END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 
@@ -40,13 +42,21 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
 <YYINITIAL> {
+    // literals
     {DOUBLE_QUOTED_STRING}    { yybegin(YYINITIAL); return MotokoTypes.STRING; }
-    {EQUAL}                   { yybegin(YYINITIAL); return MotokoTypes.EQUAL; }
+
+    // keywords
+    {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
     {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
-    {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
+    {TRUE}                    { yybegin(YYINITIAL); return MotokoTypes.TRUE; }
     {VAR}                     { yybegin(YYINITIAL); return MotokoTypes.VAR; }
 
+    // symbols
+    {EQUAL}                   { yybegin(YYINITIAL); return MotokoTypes.EQUAL; }
+    {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
+
+    // identifiers
     {ID}                      { yybegin(YYINITIAL); return MotokoTypes.ID; }
 }
 
