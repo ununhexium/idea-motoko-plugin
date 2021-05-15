@@ -19,13 +19,67 @@ motokoFile ::= prog
 
 prog::= imp_list* dec_list*
 
-imp_list ::= imp SEMI imp_list*
-
-imp ::= IMPORT ID? EQUAL? STRING
-
+private imp_list ::= imp imp_list*
 private dec_list ::= dec SEMI dec_list*
 
-dec ::= dec_var
+imp ::= IMPORT ID? EQUAL? STRING SEMI
+
+dec ::= exp
+
+exp ::=
+    dec_var
+  | exp_nonvar
+
+exp_nonvar ::=
+    dec_nonvar
+  | exp_nondec
+
+exp_nondec ::=
+    exp_bin
+
+exp_bin ::=
+    exp_un
+
+exp_un ::=
+    exp_post
+
+exp_post ::=
+    exp_nullary
+
+exp_nullary ::=
+//    exp_obj
+    exp_plain
+//    id
+
+exp_plain ::=
+    lit
+
+dec_nonvar ::= LET pat EQUAL exp
+
+pat ::= pat_bin
+
+pat_bin ::=
+    pat_un
+//  | pat_bin OR pat_bin
+//  | pat_bin ':' typ
+
+pat_un ::=
+    pat_nullary
+//  | '#' ID
+//  | '#' ID pat_nullary
+//  | '?' pat_un
+    // | <unop> <lit>
+
+pat_nullary ::=
+    pat_plain
+//  | '{' <list(<pat_field>, ';')> '}'
+
+pat_plain ::=
+    UNDERSCORE
+  | ID
+  | lit
+//  |  '(' <list(<pat_bin>, ',')> ')'
+
 
 // TODO support for types <dec_var> ::= VAR ID (COLUMN <typ>)? EQUAL <lit>
 dec_var ::= VAR ID EQUAL lit
