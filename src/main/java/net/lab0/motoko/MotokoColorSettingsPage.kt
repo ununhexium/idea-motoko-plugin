@@ -28,7 +28,13 @@ import Example "./example";
 
 // single line comment
 module {
-  func f(x: UserId, y: UserId): Bool { false };
+  func f(x: UserId, y: UserId): Bool {
+    if (true) {
+      0  
+    } else {
+      null
+    };
+  };
   
   public class Class {
   };

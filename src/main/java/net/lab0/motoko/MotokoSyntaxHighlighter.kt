@@ -32,9 +32,11 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
     val KEYWORDS = listOf(
       MotokoTypes.ACTOR,
       MotokoTypes.CLASS,
+      MotokoTypes.ELSE,
       MotokoTypes.FALSE,
       MotokoTypes.FLEXIBLE,
       MotokoTypes.FUNC,
+      MotokoTypes.IF,
       MotokoTypes.IMPORT,
       MotokoTypes.LET,
       MotokoTypes.MODULE,

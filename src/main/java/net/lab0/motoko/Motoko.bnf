@@ -225,6 +225,7 @@ exp_gte ::=
 exp_plain ::=
     lit
   | ID
+  | L_PAREN exp? (COMA exp)* R_PAREN
 
 //<exp_nullary> ::=
 //    <exp_obj>
@@ -341,6 +342,11 @@ exp_divide ::= exp '/' exp
 
 private exp_nondec ::=
     exp_bin
+  | exp_bin_if
+
+exp_bin_if ::=
+    IF exp_nullary exp_nest ELSE exp_nest
+  | IF exp_nullary exp_nest
 
 //<exp_nonvar> ::=
 //    <exp_nondec>
@@ -360,6 +366,10 @@ exp ::=
 //<exp_nest> ::=
 //    <block>
 //    <exp>
+
+exp_nest ::=
+    block
+  | exp
 
 //<block> ::=
 //    '{' <list(<dec>, ';')> '}'
@@ -524,4 +534,4 @@ private dec_list ::= dec SEMI dec_list*
 //<prog> ::=
 //    <list(<imp>, ';')> <list(<dec>, ';')>
 
-prog::= imp_list* dec_list*
+prog::= imp_list* dec_list* LINE_COMMENT*

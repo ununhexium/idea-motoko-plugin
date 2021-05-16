@@ -30,11 +30,13 @@ COLUMN=":"
 COMA=","
 EQEQ="=="
 EQ="="
+ELSE="else"
 FALSE="false"
 FLEXIBLE="flexible"
 FUNC="func"
 GTE=">="
 ID=[:jletter:] [:jletterdigit:]*
+IF="if"
 IMPORT="import"
 L_ANGLE="<"
 L_CURL="{"
@@ -71,7 +73,7 @@ VAR="var"
 
 <YYINITIAL> {
     // comments
-    {LINE_COMMENT}     { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
+    {LINE_COMMENT}            { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
 
     // literals
     {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
@@ -80,14 +82,18 @@ VAR="var"
     // keywords
     {ACTOR}                   { yybegin(YYINITIAL); return MotokoTypes.ACTOR; }
     {CLASS}                   { yybegin(YYINITIAL); return MotokoTypes.CLASS; }
+    {ELSE}                    { yybegin(YYINITIAL); return MotokoTypes.ELSE; }
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
     {FUNC}                    { yybegin(YYINITIAL); return MotokoTypes.FUNC; }
+    {IF}                      { yybegin(YYINITIAL); return MotokoTypes.IF; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
     {LET}                     { yybegin(YYINITIAL); return MotokoTypes.LET; }
     {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
     {MODULE}                  { yybegin(YYINITIAL); return MotokoTypes.MODULE; }
     {OBJECT}                  { yybegin(YYINITIAL); return MotokoTypes.OBJECT; }
     {PUBLIC}                  { yybegin(YYINITIAL); return MotokoTypes.PUBLIC; }
+    {SHARED}                  { yybegin(YYINITIAL); return MotokoTypes.SHARED; }
+    {SYSTEM}                  { yybegin(YYINITIAL); return MotokoTypes.SYSTEM; }
     {TRUE}                    { yybegin(YYINITIAL); return MotokoTypes.TRUE; }
     {TYPE}                    { yybegin(YYINITIAL); return MotokoTypes.TYPE; }
     {VAR}                     { yybegin(YYINITIAL); return MotokoTypes.VAR; }
@@ -99,14 +105,15 @@ VAR="var"
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
     // symbols
+    {COLUMN}                  { yybegin(YYINITIAL); return MotokoTypes.COLUMN; }
     {COMA}                    { yybegin(YYINITIAL); return MotokoTypes.COMA; }
     {EQEQ}                    { yybegin(YYINITIAL); return MotokoTypes.EQEQ; }
-    {L_ANGLE}                  { yybegin(YYINITIAL); return MotokoTypes.L_ANGLE; }
+    {L_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.L_ANGLE; }
     {L_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.L_CURL; }
-    {L_PAREN}                  { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
-    {R_ANGLE}                  { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
+    {L_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
+    {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
-    {R_PAREN}                  { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
+    {R_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
     {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
 
 
