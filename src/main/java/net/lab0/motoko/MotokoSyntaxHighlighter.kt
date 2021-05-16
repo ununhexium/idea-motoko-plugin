@@ -16,6 +16,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
     return when (tokenType) {
       MotokoTypes.ID -> IDENTIFIER_KEYS
       MotokoTypes.TEXT -> TEXT_KEYS
+      in NUMBERS -> NUMBER_KEYS
       in KEYWORDS -> KEYWORD_KEYS
       in OPERATION_SIGNS -> OPERATION_SIGN_KEYS
       else -> EMPTY_KEYS
@@ -42,6 +43,10 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.TRUE,
       MotokoTypes.TYPE,
       MotokoTypes.VAR,
+    )
+
+    val NUMBERS = listOf(
+      MotokoTypes.NAT,
     )
 
     val OPERATION_SIGNS = listOf(
@@ -72,6 +77,11 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       DefaultLanguageHighlighterColors.IDENTIFIER
     )
 
+    val NUMBER = TextAttributesKey.createTextAttributesKey(
+      "NUMBER",
+      DefaultLanguageHighlighterColors.NUMBER
+    )
+
     val OPERATION_SIGN = TextAttributesKey.createTextAttributesKey(
       "OPERATION_SIGN",
       DefaultLanguageHighlighterColors.OPERATION_SIGN
@@ -84,6 +94,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
 
     private val KEYWORD_KEYS = arrayOf(KEYWORD)
     private val IDENTIFIER_KEYS = arrayOf(IDENTIFIER)
+    private val NUMBER_KEYS = arrayOf(NUMBER)
     private val OPERATION_SIGN_KEYS = arrayOf(OPERATION_SIGN)
     private val TEXT_KEYS = arrayOf(TEXT)
     private val EMPTY_KEYS = arrayOf<TextAttributesKey>()

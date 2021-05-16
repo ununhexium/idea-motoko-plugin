@@ -45,6 +45,8 @@
 
         <lang.syntaxHighlighterFactory language="Motoko"
                                        implementationClass="net.lab0.motoko.MotokoSyntaxHighlighterFactory"/>
+
+        <colorSettingsPage implementation="net.lab0.motoko.MotokoColorSettingsPage"/>
     </extensions>
 
 </idea-plugin>
