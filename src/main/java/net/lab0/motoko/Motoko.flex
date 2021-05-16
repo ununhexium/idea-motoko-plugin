@@ -33,10 +33,12 @@ EQ="="
 ELSE="else"
 FALSE="false"
 FLEXIBLE="flexible"
+FOR="for"
 FUNC="func"
 GTE=">="
 ID=[:jletter:] [:jletterdigit:]*
 IF="if"
+IN="in"
 IMPORT="import"
 L_ANGLE="<"
 L_CURL="{"
@@ -86,8 +88,10 @@ VAR="var"
     {CLASS}                   { yybegin(YYINITIAL); return MotokoTypes.CLASS; }
     {ELSE}                    { yybegin(YYINITIAL); return MotokoTypes.ELSE; }
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
+    {FOR}                     { yybegin(YYINITIAL); return MotokoTypes.FOR; }
     {FUNC}                    { yybegin(YYINITIAL); return MotokoTypes.FUNC; }
     {IF}                      { yybegin(YYINITIAL); return MotokoTypes.IF; }
+    {IN}                      { yybegin(YYINITIAL); return MotokoTypes.IN; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
     {LET}                     { yybegin(YYINITIAL); return MotokoTypes.LET; }
     {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }

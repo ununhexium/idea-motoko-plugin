@@ -354,10 +354,15 @@ exp_divide ::= exp '/' exp
 private exp_nondec ::=
     exp_bin
   | exp_bin_if
+  | exp_bin_for
 
 exp_bin_if ::=
     IF exp_nullary exp_nest ELSE exp_nest
   | IF exp_nullary exp_nest
+
+// Ref: 'for' '(' <pat> 'in' <exp> ')' <exp_nest>
+exp_bin_for ::=
+    FOR L_PAREN pat IN exp R_PAREN exp_nest
 
 //<exp_nonvar> ::=
 //    <exp_nondec>
