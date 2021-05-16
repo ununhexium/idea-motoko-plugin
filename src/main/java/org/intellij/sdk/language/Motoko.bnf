@@ -225,6 +225,7 @@ private exp_un ::=
 private exp_bin ::=
     exp_un
   | add_group
+  | multiply_group
 
 private add_group ::=
     exp_plus
@@ -232,6 +233,13 @@ private add_group ::=
 
 exp_minus ::= exp '-' exp
 exp_plus ::= exp '+' exp
+
+private multiply_group ::=
+    exp_multiply
+  | exp_divide
+
+exp_multiply ::= exp '*' exp
+exp_divide ::= exp '/' exp
 
 //<binop> ::=
 //    '+'
