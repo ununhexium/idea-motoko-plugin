@@ -51,6 +51,7 @@ NEQ="!="
 NULL="null"
 OR="or"
 OBJECT="object"
+POINT="."
 PRIVATE="private"
 PUBLIC="public"
 QUERY="query"
@@ -117,11 +118,12 @@ VAR="var"
     {L_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.L_ANGLE; }
     {L_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.L_CURL; }
     {L_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
-    {L_SQUARE}                 { yybegin(YYINITIAL); return MotokoTypes.L_SQUARE; }
+    {L_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.L_SQUARE; }
+    {POINT}                   { yybegin(YYINITIAL); return MotokoTypes.POINT; }
     {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
     {R_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
-    {R_SQUARE}                 { yybegin(YYINITIAL); return MotokoTypes.R_SQUARE; }
+    {R_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.R_SQUARE; }
     {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
 
 

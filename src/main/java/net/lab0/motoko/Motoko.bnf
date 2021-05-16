@@ -44,7 +44,7 @@ obj_sort ::=
 //    <empty>
 //    'shared' 'query'?
 //    'query'
-//
+
 //<shared_pat_opt> ::=
 //    <empty>
 //    'shared' 'query'? <pat_plain>?
@@ -71,7 +71,7 @@ shared_pat_opt ::=
 
 typ_nullary ::=
 //  TODO type args: ID ('.' ID)* typ_args?
-    ID ('.' ID)*
+    ID (POINT ID)* typ_args?
   | L_SQUARE VAR? typ R_SQUARE
 
 //<typ_un> ::=
@@ -80,6 +80,7 @@ typ_nullary ::=
 
 typ_un ::=
     typ_nullary
+  | '?' typ_un
 
 //<typ_pre> ::=
 //    <typ_un>
@@ -102,6 +103,9 @@ typ ::=
 
 //<typ_args> ::=
 //    '<' <list(<typ>, ',')> '>'
+
+typ_args ::=
+    L_ANGLE typ (COMA typ)* R_ANGLE
 
 //<typ_field> ::=
 //    'var'? <id> ':' <typ>
@@ -244,7 +248,7 @@ exp_id ::=
 //    <exp_nullary>
 //    '[' 'var'? <list(<exp_nonvar>, ',')> ']'
 //    <exp_post> '[' <exp> ']'
-//    <exp_post> '.'<nat>
+//    <exp_post> '.' <nat>
 //    <exp_post> '.' <id>
 //    <exp_post> ('<' <list(<typ>, ',')> '>')? <exp_nullary>
 //    <exp_post> BANG
@@ -253,13 +257,23 @@ private exp_post ::=
     exp_nullary
   | exp_array
   | exp_post_array
+  | exp_post_id
+  | exp_post_typ
 
 exp_array ::=
     L_SQUARE VAR? exp_nonvar? (COMA exp_nonvar)* R_SQUARE
 
+// Ref: <exp_post> '[' <exp> ']'
 exp_post_array ::=
-// TODO: first should not be exp but exp_post
     exp L_SQUARE exp R_SQUARE
+
+// Ref: <exp_post> '.'<nat>
+exp_post_id ::=
+    exp POINT ID
+
+// Ref: <exp_post> ('<' <list(<typ>, ',')> '>')? <exp_nullary>
+exp_post_typ ::=
+    exp L_ANGLE typ (COMA typ)* R_ANGLE exp_nullary
 
 //<exp_un> ::=
 //    <exp_post>
@@ -551,3 +565,4 @@ private dec_list ::= dec SEMI dec_list*
 //    <list(<imp>, ';')> <list(<dec>, ';')>
 
 prog::= imp_list* dec_list* LINE_COMMENT*
+
