@@ -26,12 +26,14 @@ NAT=-[:digit:]+ | [:digit:]+
 
 ACTOR="actor"
 COLUMN=":"
+COMA=","
 EQUAL="="
 FALSE="false"
 FLEXIBLE="flexible"
 ID=[:jletter:] [:jletterdigit:]*
 IMPORT="import"
 L_CURL="{"
+L_TRIANGLE="<"
 LET="let"
 MODULE="module"
 NULL="null"
@@ -40,10 +42,12 @@ OBJECT="object"
 PRIVATE="private"
 PUBLIC="public"
 R_CURL="}"
+R_TRIANGLE=">"
 SEMI=";"
 STABLE="stable"
 SYSTEM="system"
 TRUE="true"
+TYPE="type"
 UNDERSCORE="_"
 VAR="var"
 
@@ -71,6 +75,7 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
     {MODULE}                  { yybegin(YYINITIAL); return MotokoTypes.MODULE; }
     {OBJECT}                  { yybegin(YYINITIAL); return MotokoTypes.OBJECT; }
     {TRUE}                    { yybegin(YYINITIAL); return MotokoTypes.TRUE; }
+    {TYPE}                    { yybegin(YYINITIAL); return MotokoTypes.TYPE; }
     {VAR}                     { yybegin(YYINITIAL); return MotokoTypes.VAR; }
 
     // symbols
