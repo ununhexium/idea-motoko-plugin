@@ -19,7 +19,7 @@ import com.intellij.psi.TokenType;
 
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
-
+LINE_COMMENT="//"[^\r\n]*
 
 TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 NAT=-[:digit:]+ | [:digit:]+
@@ -61,9 +61,6 @@ TYPE="type"
 UNDERSCORE="_"
 VAR="var"
 
-
-END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
-
 %state WAITING_VALUE
 
 %%
@@ -73,6 +70,9 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
 <YYINITIAL> {
+    // comments
+    {LINE_COMMENT}     { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
+
     // literals
     {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
     {NAT}                     { yybegin(YYINITIAL); return MotokoTypes.NAT; }
