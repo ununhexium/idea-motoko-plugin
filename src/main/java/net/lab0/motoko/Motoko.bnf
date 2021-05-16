@@ -61,7 +61,7 @@ shared_pat_opt ::=
 //<typ_variant> ::=
 //    '{' '#' '}'
 //    '{' <list1(<typ_tag>, ';')> '}'
-//
+
 //<typ_nullary> ::=
 //    '(' <list(<typ_item>, ',')> ')'
 //    <id> ('.' <id>)* <typ_args>?
@@ -70,8 +70,8 @@ shared_pat_opt ::=
 //    <typ_variant>
 
 typ_nullary ::=
-//  TODO type args: ID ('.' ID)* typ_args?
-    ID (POINT ID)* typ_args?
+    L_PAREN typ_item? (COMA typ_item)* R_PAREN
+  | ID (POINT ID)* typ_args?
   | L_SQUARE VAR? typ R_SQUARE
 
 //<typ_un> ::=
@@ -100,6 +100,10 @@ typ ::=
 //<typ_item> ::=
 //    <id> ':' <typ>
 //    <typ>
+
+typ_item ::=
+    ID COLUMN typ
+  | typ
 
 //<typ_args> ::=
 //    '<' <list(<typ>, ',')> '>'
@@ -260,6 +264,7 @@ private exp_post ::=
   | exp_post_id
   | exp_post_typ
 
+// Ref: '[' 'var'? <list(<exp_nonvar>, ',')> ']'
 exp_array ::=
     L_SQUARE VAR? exp_nonvar? (COMA exp_nonvar)* R_SQUARE
 
@@ -267,11 +272,12 @@ exp_array ::=
 exp_post_array ::=
     exp L_SQUARE exp R_SQUARE
 
-// Ref: <exp_post> '.'<nat>
+// Ref: <exp_post> '.' <id>
 exp_post_id ::=
     exp POINT ID
 
 // Ref: <exp_post> ('<' <list(<typ>, ',')> '>')? <exp_nullary>
+// TODO: must be optional. But making it optional makes an infinite recursion.
 exp_post_typ ::=
     exp L_ANGLE typ (COMA typ)* R_ANGLE exp_nullary
 
