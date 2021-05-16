@@ -19,6 +19,7 @@
 
 motokoFile ::= prog
 
+empty ::=
 
 //<list(X, SEP)> ::=
 //    <empty>
@@ -28,12 +29,17 @@ motokoFile ::= prog
 //<list1(X, SEP)> ::=
 //    X
 //    X SEP <list(X, SEP)>
-//
+
 //<obj_sort> ::=
 //    'object'
 //    'actor'
 //    'module'
-//
+
+obj_sort ::=
+    OBJECT
+  | ACTOR
+  | MODULE
+
 //<func_sort_opt> ::=
 //    <empty>
 //    'shared' 'query'?
@@ -321,8 +327,12 @@ exp ::=
 //    'var'? <id> (':' <typ>)?
 //    'var'? <id> (':' <typ>)? '=' <exp>
 
+
 //<dec_field> ::=
 //    <vis> <stab> <dec>
+
+dec_field ::=
+    visibility stability dec
 
 //<vis> ::=
 //    <empty>
@@ -330,10 +340,21 @@ exp ::=
 //    'public'
 //    'system'
 
+visibility ::=
+    PRIVATE
+  | PUBLIC
+  | SYSTEM
+  | empty
+
 //<stab> ::=
 //    <empty>
 //    'flexible'
 //    'stable'
+
+stability ::=
+    FLEXIBLE
+  | STABLE
+  | empty
 
 //<pat_plain> ::=
 //    '_'
@@ -393,7 +414,9 @@ dec_var ::=
 //    <shared_pat_opt> 'func' <id>? ('<' <list(<typ_bind>, ',')> '>')? <pat_plain> (':' <typ>)? <func_body>
 //    <shared_pat_opt> <obj_sort>? 'class' <id>? ('<' <list(<typ_bind>, ',')> '>')? <pat_plain> (':' <typ>)? <class_body>
 
-private dec_nonvar ::= LET pat EQUAL exp
+private dec_nonvar ::=
+    LET pat EQUAL exp
+  | obj_sort ID? EQUAL? obj_body
 
 //<dec> ::=
 //    <dec_var>
@@ -411,6 +434,9 @@ dec ::=
 
 //<obj_body> ::=
 //    '{' <list(<dec_field>, ';')> '}'
+
+obj_body ::=
+    L_CURL (dec_field SEMI)* R_CURL
 
 //<class_body> ::=
 //    '=' <id>? <obj_body>
