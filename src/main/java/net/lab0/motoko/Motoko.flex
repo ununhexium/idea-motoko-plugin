@@ -41,6 +41,7 @@ IMPORT="import"
 L_ANGLE="<"
 L_CURL="{"
 L_PAREN="("
+L_SQUARE="["
 LET="let"
 LTE="<="
 MODULE="module"
@@ -54,6 +55,7 @@ QUERY="query"
 R_ANGLE=">"
 R_CURL="}"
 R_PAREN=")"
+R_SQUARE="]"
 SEMI=";"
 SHARED="shared"
 STABLE="stable"
@@ -111,9 +113,11 @@ VAR="var"
     {L_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.L_ANGLE; }
     {L_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.L_CURL; }
     {L_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
+    {L_SQUARE}                 { yybegin(YYINITIAL); return MotokoTypes.L_SQUARE; }
     {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
     {R_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
+    {R_SQUARE}                 { yybegin(YYINITIAL); return MotokoTypes.R_SQUARE; }
     {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
 
 

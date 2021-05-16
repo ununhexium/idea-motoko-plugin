@@ -72,6 +72,7 @@ shared_pat_opt ::=
 typ_nullary ::=
 //  TODO type args: ID ('.' ID)* typ_args?
     ID ('.' ID)*
+  | L_SQUARE VAR? typ R_SQUARE
 
 //<typ_un> ::=
 //    <typ_nullary>
@@ -224,7 +225,6 @@ exp_gte ::=
 
 exp_plain ::=
     lit
-  | ID
   | L_PAREN exp? (COMA exp)* R_PAREN
 
 //<exp_nullary> ::=
@@ -235,8 +235,10 @@ exp_plain ::=
 private exp_nullary ::=
 //    exp_obj
     exp_plain
-// this causes left-recursion if left here
-//   | ID
+  | exp_id
+
+exp_id ::=
+    ID
 
 //<exp_post> ::=
 //    <exp_nullary>
@@ -249,6 +251,15 @@ private exp_nullary ::=
 
 private exp_post ::=
     exp_nullary
+  | exp_array
+  | exp_post_array
+
+exp_array ::=
+    L_SQUARE VAR? exp_nonvar? (COMA exp_nonvar)* R_SQUARE
+
+exp_post_array ::=
+// TODO: first should not be exp but exp_post
+    exp L_SQUARE exp R_SQUARE
 
 //<exp_un> ::=
 //    <exp_post>
@@ -472,7 +483,7 @@ pat ::=
 //    'var' <id> (':' <typ>)? '=' <exp>
 
 dec_var ::=
-    VAR ID EQ lit
+    VAR ID EQ exp
 
 //<dec_nonvar> ::=
 //    'let' <pat> '=' <exp>

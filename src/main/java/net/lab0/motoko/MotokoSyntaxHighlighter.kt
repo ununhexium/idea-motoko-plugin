@@ -66,11 +66,13 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.L_ANGLE,
       MotokoTypes.L_CURL,
       MotokoTypes.L_PAREN,
+      MotokoTypes.L_SQUARE,
       MotokoTypes.NAT,
       MotokoTypes.NEQ,
       MotokoTypes.R_ANGLE,
       MotokoTypes.R_CURL,
       MotokoTypes.R_PAREN,
+      MotokoTypes.R_SQUARE,
       MotokoTypes.SEMI,
       MotokoTypes.UNDERSCORE,
     )
