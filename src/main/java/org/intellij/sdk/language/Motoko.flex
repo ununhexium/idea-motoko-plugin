@@ -30,10 +30,12 @@ COMA=","
 EQUAL="="
 FALSE="false"
 FLEXIBLE="flexible"
+FUNC="func"
 ID=[:jletter:] [:jletterdigit:]*
 IMPORT="import"
+L_ANGLE="<"
 L_CURL="{"
-L_TRIANGLE="<"
+L_PAREN="("
 LET="let"
 MODULE="module"
 NULL="null"
@@ -41,9 +43,12 @@ OR="or"
 OBJECT="object"
 PRIVATE="private"
 PUBLIC="public"
+QUERY="query"
+R_ANGLE=">"
 R_CURL="}"
-R_TRIANGLE=">"
+R_PAREN=")"
 SEMI=";"
+SHARED="shared"
 STABLE="stable"
 SYSTEM="system"
 TRUE="true"
@@ -69,6 +74,7 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
     // keywords
     {ACTOR}                   { yybegin(YYINITIAL); return MotokoTypes.ACTOR; }
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
+    {FUNC}                    { yybegin(YYINITIAL); return MotokoTypes.FUNC; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
     {LET}                     { yybegin(YYINITIAL); return MotokoTypes.LET; }
     {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
@@ -79,10 +85,15 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
     {VAR}                     { yybegin(YYINITIAL); return MotokoTypes.VAR; }
 
     // symbols
+    {COMA}                    { yybegin(YYINITIAL); return MotokoTypes.COMA; }
     {EQUAL}                   { yybegin(YYINITIAL); return MotokoTypes.EQUAL; }
-    {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
+//    {L_ANGLE}                  { yybegin(YYINITIAL); return MotokoTypes.L_ANGLE; }
     {L_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.L_CURL; }
+    {L_PAREN}                  { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
+//    {R_ANGLE}                  { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
+    {R_PAREN}                  { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
+    {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
 
     // identifiers
     {ID}                      { yybegin(YYINITIAL); return MotokoTypes.ID; }

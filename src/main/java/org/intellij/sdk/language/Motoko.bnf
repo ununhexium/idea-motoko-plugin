@@ -49,7 +49,12 @@ obj_sort ::=
 //    <empty>
 //    'shared' 'query'? <pat_plain>?
 //    'query' <pat_plain>?
-//
+
+shared_pat_opt ::=
+    SHARED QUERY? pat_plain?
+  | QUERY pat_plain?
+  | empty
+
 //<typ_obj> ::=
 //    '{' <list(<typ_field>, ';')> '}'
 //
@@ -203,7 +208,8 @@ exp_plain ::=
 private exp_nullary ::=
 //    exp_obj
     exp_plain
-//    id
+// this causes left-recursion if left here
+//   | ID
 
 //<exp_post> ::=
 //    <exp_nullary>
@@ -330,6 +336,9 @@ exp ::=
 //<block> ::=
 //    '{' <list(<dec>, ';')> '}'
 
+block ::=
+    L_CURL dec? (';' dec)* R_CURL
+
 //<case> ::=
 //    'case' <pat_nullary> <exp_nest>
 
@@ -379,12 +388,13 @@ pat_plain ::=
     UNDERSCORE
   | ID
   | lit
+  | L_PAREN pat_bin? (COMA pat_bin)* R_PAREN
 
 //<pat_nullary> ::=
 //    <pat_plain>
 //    '{' <list(<pat_field>, ';')> '}'
 
-pat_nullary ::=
+private pat_nullary ::=
     pat_plain
 
 //<pat_un> ::=
@@ -394,7 +404,7 @@ pat_nullary ::=
 //    '?' <pat_un>
 //    <unop> <lit>
 
-pat_un ::=
+private pat_un ::=
     pat_nullary
 
 //<pat_bin> ::=
@@ -404,11 +414,17 @@ pat_un ::=
 
 private pat_bin ::=
     pat_un
+//  | pat_bin_or
+  | pat_bin_type
+
+pat_bin_type ::=
+    pat ':' typ
 
 //<pat> ::=
 //    <pat_bin>
 
-pat ::= pat_bin
+pat ::=
+    pat_bin
 
 //<pat_field> ::=
 //    <id> (':' <typ>)?
@@ -429,9 +445,11 @@ dec_var ::=
 
 private dec_nonvar ::=
     LET pat EQUAL exp
-// TODO support generics  | TYPE ID (L_TRIANGLE (typ_bind COMA)* R_TRIANGLE)? EQUAL typ
+// TODO support generics  | TYPE ID (L_ANGLE (typ_bind COMA)* R_ANGLE)? EQUAL typ
   | TYPE ID EQUAL typ
   | obj_sort ID? EQUAL? obj_body
+//TODO: generics  | shared_pat_opt FUNC ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? <pat_plain> (':' <typ>)? func_body
+  | shared_pat_opt FUNC ID? pat_plain (':' typ)? func_body
 
 //<dec> ::=
 //    <dec_var>
@@ -446,6 +464,10 @@ dec ::=
 //<func_body> ::=
 //    '=' <exp>
 //    <block>
+
+func_body ::=
+    EQUAL exp
+  | block
 
 //<obj_body> ::=
 //    '{' <list(<dec_field>, ';')> '}'
