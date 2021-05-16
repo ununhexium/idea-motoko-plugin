@@ -26,6 +26,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
   companion object {
     val KEYWORDS = listOf(
       MotokoTypes.ACTOR,
+      MotokoTypes.CLASS,
       MotokoTypes.FALSE,
       MotokoTypes.FLEXIBLE,
       MotokoTypes.FUNC,

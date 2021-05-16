@@ -25,6 +25,7 @@ TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 NAT=-[:digit:]+ | [:digit:]+
 
 ACTOR="actor"
+CLASS="class"
 COLUMN=":"
 COMA=","
 EQEQ="=="
@@ -78,6 +79,7 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 
     // keywords
     {ACTOR}                   { yybegin(YYINITIAL); return MotokoTypes.ACTOR; }
+    {CLASS}                   { yybegin(YYINITIAL); return MotokoTypes.CLASS; }
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
     {FUNC}                    { yybegin(YYINITIAL); return MotokoTypes.FUNC; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
@@ -85,6 +87,7 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
     {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
     {MODULE}                  { yybegin(YYINITIAL); return MotokoTypes.MODULE; }
     {OBJECT}                  { yybegin(YYINITIAL); return MotokoTypes.OBJECT; }
+    {PUBLIC}                  { yybegin(YYINITIAL); return MotokoTypes.PUBLIC; }
     {TRUE}                    { yybegin(YYINITIAL); return MotokoTypes.TRUE; }
     {TYPE}                    { yybegin(YYINITIAL); return MotokoTypes.TYPE; }
     {VAR}                     { yybegin(YYINITIAL); return MotokoTypes.VAR; }

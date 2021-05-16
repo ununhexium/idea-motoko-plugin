@@ -478,7 +478,8 @@ private dec_nonvar ::=
   | obj_sort ID? EQ? obj_body
 //TODO: generics  | shared_pat_opt FUNC ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? <pat_plain> (':' <typ>)? func_body
   | shared_pat_opt FUNC ID? pat_plain (':' typ)? func_body
-//  | <shared_pat_opt> <obj_sort>? 'class' <id>? ('<' <list(<typ_bind>, ',')> '>')? <pat_plain> (':' <typ>)? <class_body>
+//TODO: generics  | shared_pat_opt obj_sort? CLASS ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? pat_plain (COLUMN typ)? class_body
+  | shared_pat_opt obj_sort? visibility CLASS ID? pat_plain (COLUMN typ)? class_body
 
 //<dec> ::=
 //    <dec_var>
@@ -507,6 +508,10 @@ obj_body ::=
 //<class_body> ::=
 //    '=' <id>? <obj_body>
 //    <obj_body>
+
+class_body ::=
+    EQ ID? obj_body
+  | obj_body
 
 //<imp> ::=
 //    'import' <id>? '='? <text>
