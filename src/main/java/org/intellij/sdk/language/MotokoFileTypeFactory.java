@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * for versions of the IntelliJ Platform prior to v2019.2.
  */
 @SuppressWarnings("deprecation")
-public class SimpleFileTypeFactory extends FileTypeFactory {
+public class MotokoFileTypeFactory extends FileTypeFactory {
 
   @Override
   public void createFileTypes(@NotNull FileTypeConsumer fileTypeConsumer) {

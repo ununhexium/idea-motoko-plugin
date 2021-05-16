@@ -164,6 +164,32 @@ bool ::= TRUE | FALSE
 //    ' > '
 //    '>='
 
+private relational_group ::=
+    exp_eq
+  | exp_neq
+  | exp_lt
+  | exp_lte
+  | exp_gt
+  | exp_gte
+
+exp_eq ::=
+    exp EQEQ exp
+
+exp_neq ::=
+    exp NEQ exp
+
+exp_lt ::=
+    exp L_ANGLE exp  // using '<' instead of " < "
+
+exp_lte ::=
+    exp LTE exp
+
+exp_gt ::=
+    exp R_ANGLE exp  // using '>' instead of " > "
+
+exp_gte ::=
+    exp GTE exp
+
 //<unassign> ::=
 //    '+='
 //    '-='
@@ -251,6 +277,7 @@ private exp_bin ::=
     exp_un
   | add_group
   | multiply_group
+  | relational_group
 
 private add_group ::=
     exp_plus
@@ -265,6 +292,7 @@ private multiply_group ::=
 
 exp_multiply ::= exp '*' exp
 exp_divide ::= exp '/' exp
+
 
 //<binop> ::=
 //    '+'
@@ -434,7 +462,7 @@ pat ::=
 //    'var' <id> (':' <typ>)? '=' <exp>
 
 dec_var ::=
-    VAR ID EQUAL lit
+    VAR ID EQ lit
 
 //<dec_nonvar> ::=
 //    'let' <pat> '=' <exp>
@@ -444,10 +472,10 @@ dec_var ::=
 //    <shared_pat_opt> <obj_sort>? 'class' <id>? ('<' <list(<typ_bind>, ',')> '>')? <pat_plain> (':' <typ>)? <class_body>
 
 private dec_nonvar ::=
-    LET pat EQUAL exp
-// TODO support generics  | TYPE ID (L_ANGLE (typ_bind COMA)* R_ANGLE)? EQUAL typ
-  | TYPE ID EQUAL typ
-  | obj_sort ID? EQUAL? obj_body
+    LET pat EQ exp
+// TODO support generics  | TYPE ID (L_ANGLE (typ_bind COMA)* R_ANGLE)? EQ typ
+  | TYPE ID EQ typ
+  | obj_sort ID? EQ? obj_body
 //TODO: generics  | shared_pat_opt FUNC ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? <pat_plain> (':' <typ>)? func_body
   | shared_pat_opt FUNC ID? pat_plain (':' typ)? func_body
 
@@ -466,7 +494,7 @@ dec ::=
 //    <block>
 
 func_body ::=
-    EQUAL exp
+    EQ exp
   | block
 
 //<obj_body> ::=
@@ -482,7 +510,7 @@ obj_body ::=
 //<imp> ::=
 //    'import' <id>? '='? <text>
 
-imp ::= IMPORT ID? EQUAL? TEXT SEMI
+imp ::= IMPORT ID? EQ? TEXT SEMI
 
 private imp_list ::= imp imp_list*
 private dec_list ::= dec SEMI dec_list*

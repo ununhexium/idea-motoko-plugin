@@ -35,7 +35,7 @@
         <!--
           Only required for versions of the IntelliJ Platform prior to v2019.2.
           Use 'com.intellij.fileTypeFactory' extension point INSTEAD of above 'com.intellij.fileType'.
-          <fileTypeFactory implementation="org.intellij.sdk.language.SimpleFileTypeFactory"/>
+          <fileTypeFactory implementation="org.intellij.sdk.language.MotokoFileTypeFactory"/>
         -->
         <lang.parserDefinition language="Motoko"
                                implementationClass="org.intellij.sdk.language.MotokoParserDefinition"/>
