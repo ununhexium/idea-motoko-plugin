@@ -12,14 +12,14 @@
     <!-- Text to display as description on Preferences/Settings | Plugin page -->
     <description>
         <![CDATA[
-            Adds support for the Motoko programming language.
+        Adds support for the Motoko programming language.
         ]]>
     </description>
     <change-notes>
         <![CDATA[
-            <ul>
-                <li><b>0.0.0</b>Initialization.</li>
-            </ul>
+        <ul>
+            <li><b>0.0.0</b>Initialization.</li>
+        </ul>
         ]]>
     </change-notes>
 
@@ -40,7 +40,11 @@
         <lang.parserDefinition language="Motoko"
                                implementationClass="net.lab0.motoko.MotokoParserDefinition"/>
 
-        <lang.commenter language="Motoko" implementationClass="net.lab0.motoko.MotokoCommenter"/>
+        <lang.commenter language="Motoko"
+                        implementationClass="net.lab0.motoko.MotokoCommenter"/>
+
+        <lang.syntaxHighlighterFactory language="Motoko"
+                                       implementationClass="net.lab0.motoko.MotokoSyntaxHighlighterFactory"/>
     </extensions>
 
 </idea-plugin>
