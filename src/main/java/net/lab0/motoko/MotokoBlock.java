@@ -1,4 +1,4 @@
-package org.intellij.sdk.language;
+package net.lab0.motoko;
 
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;

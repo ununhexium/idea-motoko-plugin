@@ -1,10 +1,10 @@
-package org.intellij.sdk.language.psi;
+package net.lab0.motoko.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
-import org.intellij.sdk.language.MotokoFileType;
-import org.intellij.sdk.language.MotokoLanguage;
+import net.lab0.motoko.MotokoFileType;
+import net.lab0.motoko.MotokoLanguage;
 import org.jetbrains.annotations.NotNull;
 
 public class MotokoFile extends PsiFileBase {

@@ -1,7 +1,7 @@
-package org.intellij.sdk.language.psi;
+package net.lab0.motoko.psi;
 
 import com.intellij.psi.tree.IElementType;
-import org.intellij.sdk.language.MotokoLanguage;
+import net.lab0.motoko.MotokoLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,10 +1,10 @@
 <idea-plugin>
 
     <!-- Unique id for this plugin. Must stay constant for the life of the plugin. -->
-    <id>net.lab0.dfinity.motoko</id>
+    <id>net.lab0.motoko</id>
 
     <!-- Text to display as name on Preferences/Settings | Plugin page -->
-    <name>Motoko support</name>
+    <name>Motoko Language Support</name>
 
     <!-- Product and plugin compatibility requirements -->
     <depends>com.intellij.modules.platform</depends>
@@ -28,19 +28,19 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Motoko File"
-                  implementationClass="org.intellij.sdk.language.MotokoFileType"
+                  implementationClass="net.lab0.motoko.MotokoFileType"
                   fieldName="INSTANCE"
                   language="Motoko"
                   extensions="mo"/>
         <!--
           Only required for versions of the IntelliJ Platform prior to v2019.2.
           Use 'com.intellij.fileTypeFactory' extension point INSTEAD of above 'com.intellij.fileType'.
-          <fileTypeFactory implementation="org.intellij.sdk.language.MotokoFileTypeFactory"/>
+          <fileTypeFactory implementation="MotokoFileTypeFactory"/>
         -->
         <lang.parserDefinition language="Motoko"
-                               implementationClass="org.intellij.sdk.language.MotokoParserDefinition"/>
+                               implementationClass="net.lab0.motoko.MotokoParserDefinition"/>
 
-        <lang.commenter language="Motoko" implementationClass="org.intellij.sdk.language.MotokoCommenter"/>
+        <lang.commenter language="Motoko" implementationClass="net.lab0.motoko.MotokoCommenter"/>
     </extensions>
 
 </idea-plugin>

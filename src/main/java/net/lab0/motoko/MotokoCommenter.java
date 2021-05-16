@@ -1,4 +1,4 @@
-package org.intellij.sdk.language;
+package net.lab0.motoko;
 
 import com.intellij.lang.Commenter;
 import org.jetbrains.annotations.Nullable;

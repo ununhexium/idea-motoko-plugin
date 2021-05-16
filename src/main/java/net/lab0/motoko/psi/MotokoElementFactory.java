@@ -1,9 +1,9 @@
-package org.intellij.sdk.language.psi;
+package net.lab0.motoko.psi;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
-import org.intellij.sdk.language.MotokoFileType;
+import net.lab0.motoko.MotokoFileType;
 
 public class MotokoElementFactory {
 

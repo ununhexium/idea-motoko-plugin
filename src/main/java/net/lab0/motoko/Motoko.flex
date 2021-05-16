@@ -1,9 +1,9 @@
 
-package org.intellij.sdk.language;
+package net.lab0.motoko;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import org.intellij.sdk.language.psi.MotokoTypes;
+import net.lab0.motoko.psi.MotokoTypes;
 import com.intellij.psi.TokenType;
 
 %%

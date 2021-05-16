@@ -1,4 +1,4 @@
-package org.intellij.sdk.language;
+package net.lab0.motoko;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;

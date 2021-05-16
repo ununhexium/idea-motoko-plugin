@@ -1,4 +1,4 @@
-package org.intellij.sdk.language.psi;
+package net.lab0.motoko.psi;
 
 import com.intellij.psi.PsiNameIdentifierOwner;
 

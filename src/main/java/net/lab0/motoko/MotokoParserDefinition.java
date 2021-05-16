@@ -1,4 +1,4 @@
-package org.intellij.sdk.language;
+package net.lab0.motoko;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
@@ -11,9 +11,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.intellij.sdk.language.parser.MotokoParser;
-import org.intellij.sdk.language.psi.MotokoFile;
-import org.intellij.sdk.language.psi.MotokoTypes;
+import net.lab0.motoko.parser.MotokoParser;
+import net.lab0.motoko.psi.MotokoFile;
+import net.lab0.motoko.psi.MotokoTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class MotokoParserDefinition implements ParserDefinition {
