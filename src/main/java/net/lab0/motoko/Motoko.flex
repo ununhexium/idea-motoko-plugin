@@ -47,7 +47,7 @@ FLEXIBLE="flexible"
 FOR="for"
 FUNC="func"
 GTE=">="
-ID=[:jletter:] [:jletterdigit:]*
+ID=[a-zA-Z] [a-zA-Z0-9_]*
 IF="if"
 IGNORE="ignore"
 IN="in"
