@@ -26,7 +26,7 @@ empty ::=
 //    X
 //    X SEP <list(X, SEP)>
 
-meta list ::= <empty> | <<X>> | <<X>> <<SEP>> <<list <<X>> <<SEP>> >>
+//meta list ::= <empty> | <<X>> | <<X>> <<SEP>> <<list <<X>> <<SEP>> >>
 
 //<list1(X, SEP)> ::=
 //    X
@@ -146,6 +146,11 @@ bool ::= TRUE | FALSE
 //    '+'
 //    '-'
 //    '^'
+
+exp_unop ::=
+    PLUS exp
+  | MINUS exp
+  | CARRET exp
 
 //<binop> ::=
 //    '+'
@@ -283,7 +288,7 @@ exp_post_array ::=
     exp L_SQUARE exp R_SQUARE
 
 // Ugly hack because resursing on exp_post like in the spec is not possible (private)
-// Therefore recursing directly on function call-like expression
+// Therefore recursing directly on "function call"-like expression
 exp_post_ref ::=
     exp exp_parens
 
@@ -314,6 +319,8 @@ exp_post_bang ::=
 
 private exp_un ::=
     exp_post
+  | exp_unop
+
 
 //<exp_bin> ::=
 //    <exp_un>
@@ -499,6 +506,12 @@ private pat_nullary ::=
 
 private pat_un ::=
     pat_nullary
+  | pat_unop
+
+pat_unop ::=
+    PLUS lit
+  | MINUS lit
+  | CARRET lit
 
 //<pat_bin> ::=
 //    <pat_un>

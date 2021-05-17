@@ -63,6 +63,7 @@ ASSERT="assert"
 AWAIT="await"
 BANG="!"
 BREAK="break"
+CARRET="^"
 CASE="case"
 CATCH="catch"
 CLASS="class"
@@ -168,6 +169,7 @@ WHILE="while"
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
     // symbols
+    {CARRET}                  { yybegin(YYINITIAL); return MotokoTypes.CARRET; }
     {COLUMN}                  { yybegin(YYINITIAL); return MotokoTypes.COLUMN; }
     {COMA}                    { yybegin(YYINITIAL); return MotokoTypes.COMA; }
     {EQEQ}                    { yybegin(YYINITIAL); return MotokoTypes.EQEQ; }
@@ -175,6 +177,8 @@ WHILE="while"
     {L_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.L_CURL; }
     {L_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
     {L_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.L_SQUARE; }
+    {MINUS}                   { yybegin(YYINITIAL); return MotokoTypes.MINUS; }
+    {PLUS}                    { yybegin(YYINITIAL); return MotokoTypes.PLUS; }
     {POINT}                   { yybegin(YYINITIAL); return MotokoTypes.POINT; }
     {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
