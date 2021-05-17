@@ -25,7 +25,9 @@ empty ::=
 //    <empty>
 //    X
 //    X SEP <list(X, SEP)>
-//
+
+meta list ::= <empty> | <<X>> | <<X>> <<SEP>> <<list <<X>> <<SEP>> >>
+
 //<list1(X, SEP)> ::=
 //    X
 //    X SEP <list(X, SEP)>
@@ -428,7 +430,7 @@ exp_nest ::=
 //    '{' <list(<dec>, ';')> '}'
 
 block ::=
-    L_CURL dec? (';' dec)* R_CURL
+    L_CURL dec? (SEMI dec)* SEMI? R_CURL
 
 //<case> ::=
 //    'case' <pat_nullary> <exp_nest>
@@ -525,7 +527,7 @@ pat ::=
 //    'var' <id> (':' <typ>)? '=' <exp>
 
 dec_var ::=
-    VAR ID EQ exp
+    VAR ID (COLUMN typ)? EQ exp
 
 //<dec_nonvar> ::=
 //    'let' <pat> '=' <exp>
