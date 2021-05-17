@@ -233,7 +233,13 @@ exp_gte ::=
 
 exp_plain ::=
     lit
-  | L_PAREN exp? (COMA exp)* R_PAREN
+  | exp_parens
+
+private exp_parens ::=
+    exp_parens_real
+
+exp_parens_real ::=
+    L_PAREN exp? (COMA exp)* R_PAREN
 
 //<exp_nullary> ::=
 //    <exp_obj>
@@ -262,7 +268,9 @@ private exp_post ::=
   | exp_array
   | exp_post_array
   | exp_post_id
-  | exp_post_typ
+  | exp_post_ref
+//  | exp_post_generics
+  | exp_post_bang
 
 // Ref: '[' 'var'? <list(<exp_nonvar>, ',')> ']'
 exp_array ::=
@@ -272,14 +280,23 @@ exp_array ::=
 exp_post_array ::=
     exp L_SQUARE exp R_SQUARE
 
+// Ugly hack because resursing on exp_post like in the spec is not possible (private)
+// Therefore recursing directly on function call-like expression
+exp_post_ref ::=
+    exp exp_parens
+
 // Ref: <exp_post> '.' <id>
 exp_post_id ::=
     exp POINT ID
 
 // Ref: <exp_post> ('<' <list(<typ>, ',')> '>')? <exp_nullary>
 // TODO: must be optional. But making it optional makes an infinite recursion.
-exp_post_typ ::=
-    exp L_ANGLE typ (COMA typ)* R_ANGLE exp_nullary
+exp_post_generics ::=
+    exp (L_ANGLE typ (COMA typ)* R_ANGLE) exp_nullary
+
+// Ref: <exp_post> BANG
+exp_post_bang ::=
+    exp BANG
 
 //<exp_un> ::=
 //    <exp_post>
@@ -571,4 +588,5 @@ private dec_list ::= dec SEMI dec_list*
 //    <list(<imp>, ';')> <list(<dec>, ';')>
 
 prog::= imp_list* dec_list* LINE_COMMENT*
+
 

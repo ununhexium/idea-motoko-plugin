@@ -25,6 +25,7 @@ TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 NAT=-[:digit:]+ | [:digit:]+
 
 ACTOR="actor"
+BANG="!"
 CLASS="class"
 COLUMN=":"
 COMA=","
@@ -86,6 +87,7 @@ VAR="var"
 
     // keywords
     {ACTOR}                   { yybegin(YYINITIAL); return MotokoTypes.ACTOR; }
+    {BANG}                    { yybegin(YYINITIAL); return MotokoTypes.BANG; }
     {CLASS}                   { yybegin(YYINITIAL); return MotokoTypes.CLASS; }
     {ELSE}                    { yybegin(YYINITIAL); return MotokoTypes.ELSE; }
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
