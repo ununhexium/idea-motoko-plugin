@@ -1,0 +1,1 @@
+let hashMap = HashMap.HashMap<UserId, Profile>(1, isEq, Principal.hash);

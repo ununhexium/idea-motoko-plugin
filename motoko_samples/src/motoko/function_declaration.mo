@@ -1,0 +1,1 @@
+func isEq(x: UserId, y: UserId): Bool { false };
