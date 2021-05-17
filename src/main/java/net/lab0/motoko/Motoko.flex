@@ -23,7 +23,23 @@ LINE_COMMENT="//"[^\r\n]*
 BLOCK_COMMENT="/*" [^"*/"]* "*/"
 
 TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
-NAT=-[:digit:]+ | [:digit:]+
+
+// <id>   ::= Letter (Letter | Digit | _)*
+// Letter ::= A..Z | a..z
+// Digit  ::= 0..9
+LETTER=[a-zA-Z]
+DIGIT=[0-9]
+ID={LETTER} ({LETTER}|{DIGIT})*
+
+//hexdigit ::= ['0'-'9''a'-'f''A'-'F']
+HEXDIGIT=[[0-9]||[a-f]||[A-F]]
+//num ::= digit ('_'? digit)*
+NUM={DIGIT} ({UNDERSCORE}* {DIGIT})*
+//hexnum ::= hexdigit ('_'? hexdigit)*
+HEXNUM={HEXDIGIT} ({UNDERSCORE}? {HEXDIGIT})*
+//nat ::= num | "0x" hexnum
+NAT={NUM} | "0x" {HEXNUM}
+
 
 ACTOR="actor"
 AND="and"
@@ -47,7 +63,6 @@ FLEXIBLE="flexible"
 FOR="for"
 FUNC="func"
 GTE=">="
-ID=[a-zA-Z] [a-zA-Z0-9_]*
 IF="if"
 IGNORE="ignore"
 IN="in"
