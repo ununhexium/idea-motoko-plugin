@@ -269,7 +269,7 @@ private exp_post ::=
   | exp_post_array
   | exp_post_id
   | exp_post_ref
-//  | exp_post_generics
+  | exp_post_generics
   | exp_post_bang
 
 // Ref: '[' 'var'? <list(<exp_nonvar>, ',')> ']'
@@ -540,7 +540,7 @@ private dec_nonvar ::=
   | TYPE ID EQ typ
   | obj_sort ID? EQ? obj_body
 //TODO: generics  | shared_pat_opt FUNC ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? <pat_plain> (':' <typ>)? func_body
-  | shared_pat_opt FUNC ID? pat_plain (':' typ)? func_body
+  | shared_pat_opt visibility FUNC ID? pat_plain (':' typ)? func_body
 //TODO: generics  | shared_pat_opt obj_sort? CLASS ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? pat_plain (COLUMN typ)? class_body
   | shared_pat_opt obj_sort? visibility CLASS ID? pat_plain (COLUMN typ)? class_body
 
