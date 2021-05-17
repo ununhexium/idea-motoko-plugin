@@ -40,6 +40,18 @@ HEXNUM={HEXDIGIT} ({UNDERSCORE}? {HEXDIGIT})*
 //nat ::= num | "0x" hexnum
 NAT={NUM} | "0x" {HEXNUM}
 
+//let float =
+//    num '.' frac?
+//  | num ('.' frac?)? ('e' | 'E') sign? num
+//  | "0x" hexnum '.' hexfrac?
+//  | "0x" hexnum ('.' hexfrac?)? ('p' | 'P') sign? num
+
+FLOAT= ({NUM} {POINT} {NUM}?)
+    | {NUM} ({POINT} {NUM}?)? ["e" "E"] {SIGN}? {NUM}
+    | "0x" {HEXNUM} {POINT} {HEXNUM}?
+    | "0x" {HEXNUM} ({POINT} {HEXNUM}?)? ["p" "P"] {SIGN}? {NUM}
+
+SIGN=({PLUS} | {MINUS})
 
 ACTOR="actor"
 AND="and"
@@ -75,12 +87,14 @@ LABEL="label"
 LET="let"
 LOOP="loop"
 LTE="<="
+MINUS="-"
 MODULE="module"
 NEQ="!="
 NOT="not"
 NULL="null"
 OBJECT="object"
 OR="or"
+PLUS="+"
 POINT="."
 PRIVATE="private"
 PUBLIC="public"
@@ -113,10 +127,11 @@ WHILE="while"
 <YYINITIAL> {
     // comments
     {LINE_COMMENT}            { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
-    {BLOCK_COMMENT}      { yybegin(YYINITIAL); return MotokoTypes.BLOCK_COMMENT; }
+    {BLOCK_COMMENT}           { yybegin(YYINITIAL); return MotokoTypes.BLOCK_COMMENT; }
 
     // literals
     {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
+    {FLOAT}                   { yybegin(YYINITIAL); return MotokoTypes.FLOAT; }
     {NAT}                     { yybegin(YYINITIAL); return MotokoTypes.NAT; }
 
     // keywords

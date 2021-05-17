@@ -58,6 +58,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
 
     val NUMBERS = listOf(
       MotokoTypes.NAT,
+      MotokoTypes.FLOAT,
     )
 
     val OPERATION_SIGNS = listOf(
