@@ -22,6 +22,10 @@ WHITE_SPACE=[\ \n\t\f]
 LINE_COMMENT="//"[^\r\n]*
 BLOCK_COMMENT="/*" [^"*/"]* "*/"
 
+// Hacky
+// TODO: Implement the actual definition from https://sdk.dfinity.org/docs/language-guide/language-manual.html#syntax-chars
+CHAR="'" [:letter:] "'" | "'" \\ "'" "'"
+
 TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 
 // <id>   ::= Letter (Letter | Digit | _)*
@@ -130,6 +134,7 @@ WHILE="while"
     {BLOCK_COMMENT}           { yybegin(YYINITIAL); return MotokoTypes.BLOCK_COMMENT; }
 
     // literals
+    {CHAR}                    { yybegin(YYINITIAL); return MotokoTypes.CHAR; }
     {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
     {FLOAT}                   { yybegin(YYINITIAL); return MotokoTypes.FLOAT; }
     {NAT}                     { yybegin(YYINITIAL); return MotokoTypes.NAT; }

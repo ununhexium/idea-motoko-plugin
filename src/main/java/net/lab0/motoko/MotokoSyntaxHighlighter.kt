@@ -15,7 +15,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
   override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
     return when (tokenType) {
       MotokoTypes.ID -> IDENTIFIER_KEYS
-      MotokoTypes.TEXT -> TEXT_KEYS
+      in TEXTS -> TEXT_KEYS
       in COMMENTS -> COMMENT_KEYS
       in KEYWORDS -> KEYWORD_KEYS
       in NUMBERS -> NUMBER_KEYS
@@ -79,6 +79,11 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.R_SQUARE,
       MotokoTypes.SEMI,
       MotokoTypes.UNDERSCORE,
+    )
+
+    val TEXTS = listOf(
+      MotokoTypes.CHAR,
+      MotokoTypes.TEXT,
     )
 
     val BLOCK_COMMENTS = TextAttributesKey.createTextAttributesKey(
