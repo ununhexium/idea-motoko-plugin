@@ -20,6 +20,7 @@ import com.intellij.psi.TokenType;
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 LINE_COMMENT="//"[^\r\n]*
+BLOCK_COMMENT="/*" [^"*/"]* "*/"
 
 TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 NAT=-[:digit:]+ | [:digit:]+
@@ -80,6 +81,7 @@ VAR="var"
 <YYINITIAL> {
     // comments
     {LINE_COMMENT}            { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
+    {BLOCK_COMMENT}      { yybegin(YYINITIAL); return MotokoTypes.BLOCK_COMMENT; }
 
     // literals
     {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }

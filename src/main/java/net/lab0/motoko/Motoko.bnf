@@ -589,6 +589,6 @@ private dec_list ::= dec SEMI dec_list*
 //<prog> ::=
 //    <list(<imp>, ';')> <list(<dec>, ';')>
 
-prog::= imp_list* dec_list* LINE_COMMENT*
+prog::= imp_list* dec_list* LINE_COMMENT* BLOCK_COMMENT*
 
 

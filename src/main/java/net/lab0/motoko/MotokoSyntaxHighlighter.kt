@@ -16,7 +16,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
     return when (tokenType) {
       MotokoTypes.ID -> IDENTIFIER_KEYS
       MotokoTypes.TEXT -> TEXT_KEYS
-      in LINE_COMMENT -> COMMENT_KEYS
+      in COMMENTS -> COMMENT_KEYS
       in KEYWORDS -> KEYWORD_KEYS
       in NUMBERS -> NUMBER_KEYS
       in OPERATION_SIGNS -> OPERATION_SIGN_KEYS
@@ -25,8 +25,9 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
   }
 
   companion object {
-    val LINE_COMMENT = listOf(
+    val COMMENTS = listOf(
       MotokoTypes.LINE_COMMENT,
+      MotokoTypes.BLOCK_COMMENT,
     )
 
     val KEYWORDS = listOf(
@@ -77,6 +78,11 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.R_SQUARE,
       MotokoTypes.SEMI,
       MotokoTypes.UNDERSCORE,
+    )
+
+    val BLOCK_COMMENTS = TextAttributesKey.createTextAttributesKey(
+      "BLOCK_COMMENT",
+      DefaultLanguageHighlighterColors.BLOCK_COMMENT
     )
 
     val LINE_COMMENTS = TextAttributesKey.createTextAttributesKey(

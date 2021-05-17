@@ -5,6 +5,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
+import net.lab0.motoko.MotokoSyntaxHighlighter.Companion.BLOCK_COMMENTS
 import net.lab0.motoko.MotokoSyntaxHighlighter.Companion.IDENTIFIER
 import net.lab0.motoko.MotokoSyntaxHighlighter.Companion.KEYWORD
 import net.lab0.motoko.MotokoSyntaxHighlighter.Companion.LINE_COMMENTS
@@ -65,6 +66,7 @@ module {
   companion object {
     private val DESCRIPTORS = arrayOf(
       AttributesDescriptor("Line Comments", LINE_COMMENTS),
+      AttributesDescriptor("Multi Line Comments", BLOCK_COMMENTS),
       AttributesDescriptor("Keyword", KEYWORD),
       AttributesDescriptor("Number", NUMBER),
       AttributesDescriptor("Identifier", IDENTIFIER),
