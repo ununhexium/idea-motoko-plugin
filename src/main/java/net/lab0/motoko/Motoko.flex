@@ -19,7 +19,9 @@ import com.intellij.psi.TokenType;
 
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
+// TODO: doc comments
 LINE_COMMENT="//"[^\r\n]*
+// TODO: comments nesting
 BLOCK_COMMENT="/*" [^"*/"]* "*/"
 
 // Hacky
@@ -99,8 +101,10 @@ NOT="not"
 NULL="null"
 OBJECT="object"
 OR="or"
+PERCENT="%"
 PLUS="+"
 POINT="."
+POWER="**"
 PRIVATE="private"
 PUBLIC="public"
 QUERY="query"
@@ -111,7 +115,9 @@ R_SQUARE="]"
 RETURN="return"
 SEMI=";"
 SHARED="shared"
+SLASH="/"
 STABLE="stable"
+STAR="*"
 SWITCH="switch"
 SYSTEM="system"
 TRUE="true"
@@ -169,6 +175,8 @@ WHILE="while"
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
     // symbols
+    {POWER}                   { yybegin(YYINITIAL); return MotokoTypes.POWER; }
+
     {CARRET}                  { yybegin(YYINITIAL); return MotokoTypes.CARRET; }
     {COLUMN}                  { yybegin(YYINITIAL); return MotokoTypes.COLUMN; }
     {COMA}                    { yybegin(YYINITIAL); return MotokoTypes.COMA; }
@@ -178,6 +186,7 @@ WHILE="while"
     {L_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
     {L_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.L_SQUARE; }
     {MINUS}                   { yybegin(YYINITIAL); return MotokoTypes.MINUS; }
+    {PERCENT}                 { yybegin(YYINITIAL); return MotokoTypes.PERCENT; }
     {PLUS}                    { yybegin(YYINITIAL); return MotokoTypes.PLUS; }
     {POINT}                   { yybegin(YYINITIAL); return MotokoTypes.POINT; }
     {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
@@ -185,12 +194,14 @@ WHILE="while"
     {R_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
     {R_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.R_SQUARE; }
     {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
+    {SLASH}                   { yybegin(YYINITIAL); return MotokoTypes.SLASH; }
+    {STAR}                    { yybegin(YYINITIAL); return MotokoTypes.STAR; }
 
 
     // identifiers
     {ID}                      { yybegin(YYINITIAL); return MotokoTypes.ID; }
 }
 
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+({CRLF}|{WHITE_SPACE})+       { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-[^]                                                         { return TokenType.BAD_CHARACTER; }
+[^]                           { return TokenType.BAD_CHARACTER; }
