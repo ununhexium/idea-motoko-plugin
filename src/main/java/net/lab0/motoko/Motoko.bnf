@@ -231,6 +231,85 @@ exp_gte ::=
 //    '<>>='
 //    '@='
 
+private exp_binassign ::=
+    exp_binassign_in_place_update
+  | exp_binassign_in_place_add
+  | exp_binassign_in_place_subtract
+  | exp_binassign_in_place_multiply
+  | exp_binassign_in_place_divide
+  | exp_binassign_in_place_modulo
+  | exp_binassign_in_place_exponentiation
+  | exp_binassign_in_place_logical_and
+  | exp_binassign_in_place_logical_or
+  | exp_binassign_in_place_exclusive_or
+  | exp_binassign_in_place_shift_left
+  | exp_binassign_in_place_shift_right
+  | exp_binassign_in_place_rotate_left
+  | exp_binassign_in_place_rotate_right
+  | exp_binassign_in_place_add_wrap_on_overflow
+  | exp_binassign_in_place_subtract_wrap_on_overflow
+  | exp_binassign_in_place_multiply_wrap_on_overflow
+  | exp_binassign_in_place_exponentiation_wrap_on_overflow
+  | exp_binassign_in_place_concatenation
+
+exp_binassign_in_place_update ::=
+    exp IN_PLACE_UPDATE exp
+
+exp_binassign_in_place_add ::=
+    exp IN_PLACE_ADD exp
+
+exp_binassign_in_place_subtract ::=
+    exp IN_PLACE_SUBTRACT exp
+
+exp_binassign_in_place_multiply ::=
+    exp IN_PLACE_MULTIPLY exp
+
+exp_binassign_in_place_divide ::=
+    exp IN_PLACE_DIVIDE exp
+
+exp_binassign_in_place_modulo ::=
+    exp IN_PLACE_MODULO exp
+
+exp_binassign_in_place_exponentiation ::=
+    exp IN_PLACE_EXPONENTIATION exp
+
+exp_binassign_in_place_logical_and ::=
+    exp IN_PLACE_LOGICAL_AND exp
+
+exp_binassign_in_place_logical_or ::=
+    exp IN_PLACE_LOGICAL_OR exp
+
+exp_binassign_in_place_exclusive_or ::=
+    exp IN_PLACE_EXCLUSIVE_OR exp
+
+exp_binassign_in_place_shift_left ::=
+    exp IN_PLACE_SHIFT_LEFT exp
+
+exp_binassign_in_place_shift_right ::=
+    exp IN_PLACE_SHIFT_RIGHT exp
+
+exp_binassign_in_place_rotate_left ::=
+    exp IN_PLACE_ROTATE_LEFT exp
+
+exp_binassign_in_place_rotate_right ::=
+    exp IN_PLACE_ROTATE_RIGHT exp
+
+exp_binassign_in_place_add_wrap_on_overflow ::=
+    exp IN_PLACE_ADD_WRAP_ON_OVERFLOW exp
+
+exp_binassign_in_place_subtract_wrap_on_overflow ::=
+    exp IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW exp
+
+exp_binassign_in_place_multiply_wrap_on_overflow ::=
+    exp IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW exp
+
+exp_binassign_in_place_exponentiation_wrap_on_overflow ::=
+    exp IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW exp
+
+exp_binassign_in_place_concatenation ::=
+    exp IN_PLACE_CONCATENATION exp
+
+
 //<exp_obj> ::=
 //    '{' <list(<exp_field>, ';')> '}'
 
@@ -458,8 +537,13 @@ exp_concat ::=
 
 private exp_nondec ::=
     exp_bin
+  | exp_bin_inplace_update
+  | exp_binassign
   | exp_bin_if
   | exp_bin_for
+
+exp_bin_inplace_update ::=
+    exp IN_PLACE_UPDATE exp
 
 exp_bin_if ::=
     IF exp_nullary exp_nest ELSE exp_nest

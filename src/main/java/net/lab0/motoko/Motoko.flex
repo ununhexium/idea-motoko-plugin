@@ -87,6 +87,25 @@ HASH="#"
 IF="if"
 IGNORE="ignore"
 IN="in"
+IN_PLACE_UPDATE=":="
+IN_PLACE_ADD="+="
+IN_PLACE_SUBTRACT="-="
+IN_PLACE_MULTIPLY="*="
+IN_PLACE_DIVIDE="/="
+IN_PLACE_MODULO="%="
+IN_PLACE_EXPONENTIATION="**="
+IN_PLACE_LOGICAL_AND="&="
+IN_PLACE_LOGICAL_OR="|="
+IN_PLACE_EXCLUSIVE_OR="^="
+IN_PLACE_SHIFT_LEFT="<<="
+IN_PLACE_SHIFT_RIGHT=">>="
+IN_PLACE_ROTATE_LEFT="<<>="
+IN_PLACE_ROTATE_RIGHT="<>>="
+IN_PLACE_ADD_WRAP_ON_OVERFLOW="+%="
+IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW="-%="
+IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW="*%="
+IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW="**%="
+IN_PLACE_CONCATENATION="#="
 IMPORT="import"
 L_ANGLE="<"
 L_CURL="{"
@@ -187,6 +206,26 @@ WRAPPING_POW="**%"
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
     // symbols
+    {IN_PLACE_UPDATE}                               { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_UPDATE; }
+    {IN_PLACE_ADD}                                  { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ADD; }
+    {IN_PLACE_SUBTRACT}                             { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SUBTRACT; }
+    {IN_PLACE_MULTIPLY}                             { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_MULTIPLY; }
+    {IN_PLACE_DIVIDE}                               { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_DIVIDE; }
+    {IN_PLACE_MODULO}                               { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_MODULO; }
+    {IN_PLACE_EXPONENTIATION}                       { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_EXPONENTIATION; }
+    {IN_PLACE_LOGICAL_AND}                          { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_LOGICAL_AND; }
+    {IN_PLACE_LOGICAL_OR}                           { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_LOGICAL_OR; }
+    {IN_PLACE_EXCLUSIVE_OR}                         { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_EXCLUSIVE_OR; }
+    {IN_PLACE_SHIFT_LEFT}                           { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SHIFT_LEFT; }
+    {IN_PLACE_SHIFT_RIGHT}                          { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SHIFT_RIGHT; }
+    {IN_PLACE_ROTATE_LEFT}                          { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ROTATE_LEFT; }
+    {IN_PLACE_ROTATE_RIGHT}                         { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ROTATE_RIGHT; }
+    {IN_PLACE_ADD_WRAP_ON_OVERFLOW}                 { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ADD_WRAP_ON_OVERFLOW; }
+    {IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW}            { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW; }
+    {IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW}            { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW; }
+    {IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW}      { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW; }
+    {IN_PLACE_CONCATENATION}                        { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_CONCATENATION; }
+
     {WRAPPING_ADD}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_ADD; }
     {WRAPPING_MUL}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_MUL; }
     {WRAPPING_POW}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_POW; }
