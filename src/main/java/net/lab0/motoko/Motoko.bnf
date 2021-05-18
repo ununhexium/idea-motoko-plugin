@@ -120,7 +120,7 @@ typ_item ::=
 //    '<' <list(<typ>, ',')> '>'
 
 typ_args ::=
-    L_ANGLE typ (COMA typ)* R_ANGLE
+    L_ANGLE typ? (COMA typ)* R_ANGLE
 
 //<typ_field> ::=
 //    'var'? <id> ':' <typ>
