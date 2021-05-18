@@ -196,7 +196,7 @@ exp ::=
   | exp_lit
   | exp_unop
   | exp_binop
-  | exp_relop
+  | exp_relational
   | exp_tuple
   | exp_tuple_projection
   | exp_option_injection
@@ -211,7 +211,7 @@ exp ::=
   | exp_array_indexing
 // TODO: is this a lambda/closure? Where is it defined?
 //  | exp_function_expression
-//  | exp_function_call
+  | exp_function_call
   | exp_negation
   | exp_conjunction
   | exp_disjunction
@@ -267,7 +267,7 @@ private exp_binop ::=
 
 //parent node:<exp>
 //   <exp> <relop> <exp>                            binary relational operator
-private exp_relop ::=
+private exp_relational ::=
     exp_eq
   | exp_neq
   | exp_lt
@@ -282,13 +282,13 @@ exp_neq ::=
     exp NEQ exp
 
 exp_lt ::=
-    exp L_ANGLE exp  // using '<' instead of " < "
+    exp L_ANGLE exp
 
 exp_lte ::=
     exp LTE exp
 
 exp_gt ::=
-    exp R_ANGLE exp  // using '>' instead of " > "
+    exp R_ANGLE exp
 
 exp_gte ::=
     exp GTE exp
@@ -394,7 +394,7 @@ exp_concat ::=
 //parent node:<exp>
 // ( <exp>,* )                                             tuple
 exp_tuple ::=
-    L_PAREN exp (COMA exp)* R_PAREN
+    L_PAREN exp? (COMA exp)* R_PAREN
 
 //parent node:<exp>
 // <exp> . <nat>                                           tuple projection
@@ -527,8 +527,8 @@ exp_array_indexing ::=
 
 //parent node:<exp>
 // <exp> <typ-args>? <exp>                                 function call
-//exp_function_call ::=
-//    exp typ_args? exp
+exp_function_call ::=
+    exp typ_args exp
 
 //parent node:<exp>
 // not <exp>                                               negation

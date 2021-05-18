@@ -16,13 +16,12 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
-
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 // TODO: doc comments
 LINE_COMMENT="//"[^\r\n]*
 // TODO: comments nesting
-BLOCK_COMMENT="/*" [^"*/"]* "*/"
+BLOCK_COMMENT="/*" ~ "*/"
 
 // Hacky
 // TODO: Implement the actual definition from https://sdk.dfinity.org/docs/language-guide/language-manual.html#syntax-chars
@@ -115,12 +114,14 @@ L_PAREN="("
 L_ROTATE="<<>"
 L_SHIFT="<<"
 L_SQUARE="["
+//LT="<"
 LABEL="label"
 LET="let"
 LOOP="loop"
 LTE="<="
 MINUS="-"
 MODULE="module"
+//GT=">"
 NEQ="!="
 NOT="not"
 NULL="null"
@@ -166,9 +167,21 @@ WRAPPING_POW="**%"
 
 %%
 
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+/*
+! (negation)
 
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+Matches everything but the strings matched by a.
+Use with care: the construction of !a involves an additional, possibly exponential NFA to DFA transformation on the NFA for a.
+Note that with negation and union you also have (by applying DeMorgan) intersection and set difference:
+the intersection of a and b is !(!a|!b),
+the expression that matches everything of a not matched by b is !(!a|b)
+ */
+//<WAITING_VALUE> !(!({CRLF}({CRLF}|{WHITE_SPACE})+)|({LT} | {GT}))               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+//<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+
+//<WAITING_VALUE> !(!({WHITE_SPACE}+)|({LT} | {GT}))                                { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+<WAITING_VALUE> {WHITE_SPACE}+ / !("< "|"> ")                                { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
 <YYINITIAL> {
     // comments
@@ -258,6 +271,8 @@ WRAPPING_POW="**%"
     // comparators
     {GTE}                     { yybegin(YYINITIAL); return MotokoTypes.GTE; }
     {LTE}                     { yybegin(YYINITIAL); return MotokoTypes.LTE; }
+//    {GT}                      { yybegin(YYINITIAL); return MotokoTypes.GT; }
+//    {LT}                      { yybegin(YYINITIAL); return MotokoTypes.LT; }
     {NEQ}                     { yybegin(YYINITIAL); return MotokoTypes.NEQ; }
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
