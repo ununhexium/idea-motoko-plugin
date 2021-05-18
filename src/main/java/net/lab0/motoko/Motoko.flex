@@ -240,6 +240,7 @@ WRAPPING_POW="**%"
     {POW}                     { yybegin(YYINITIAL); return MotokoTypes.POW; }
 
     {AMPERSAND}               { yybegin(YYINITIAL); return MotokoTypes.AMPERSAND; }
+    {AND}                     { yybegin(YYINITIAL); return MotokoTypes.AND; }
     {CARRET}                  { yybegin(YYINITIAL); return MotokoTypes.CARRET; }
     {COLUMN}                  { yybegin(YYINITIAL); return MotokoTypes.COLUMN; }
     {COMA}                    { yybegin(YYINITIAL); return MotokoTypes.COMA; }
@@ -249,6 +250,7 @@ WRAPPING_POW="**%"
     {L_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.L_PAREN; }
     {L_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.L_SQUARE; }
     {MINUS}                   { yybegin(YYINITIAL); return MotokoTypes.MINUS; }
+    {OR}                      { yybegin(YYINITIAL); return MotokoTypes.OR; }
     {PERCENT}                 { yybegin(YYINITIAL); return MotokoTypes.PERCENT; }
     {PIPE}                    { yybegin(YYINITIAL); return MotokoTypes.PIPE; }
     {PLUS}                    { yybegin(YYINITIAL); return MotokoTypes.PLUS; }

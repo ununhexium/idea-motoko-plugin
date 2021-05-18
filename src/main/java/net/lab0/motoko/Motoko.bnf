@@ -206,6 +206,15 @@ exp_gt ::=
 exp_gte ::=
     exp GTE exp
 
+exp_and ::=
+    exp AND exp
+
+exp_or ::=
+    exp OR exp
+
+exp_column ::=
+    exp COLUMN typ
+
 //<unassign> ::=
 //    '+='
 //    '-='
@@ -414,6 +423,9 @@ private exp_bin ::=
     exp_un
   | binop_group
   | relational_group
+  | exp_and
+  | exp_or
+  | exp_column
 
 private binop_group ::=
     power_group

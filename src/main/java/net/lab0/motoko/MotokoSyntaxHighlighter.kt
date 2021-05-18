@@ -63,6 +63,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
 
     val OPERATION_SIGNS = listOf(
       MotokoTypes.AMPERSAND,
+      MotokoTypes.AND,
       MotokoTypes.CARRET,
       MotokoTypes.COMA,
       MotokoTypes.EQ,
@@ -98,6 +99,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.MINUS,
       MotokoTypes.NAT,
       MotokoTypes.NEQ,
+      MotokoTypes.OR,
       MotokoTypes.PERCENT,
       MotokoTypes.PIPE,
       MotokoTypes.PLUS,
