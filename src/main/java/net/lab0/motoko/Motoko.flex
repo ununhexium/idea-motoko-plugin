@@ -193,6 +193,7 @@ WRAPPING_POW="**%"
     {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
     {MODULE}                  { yybegin(YYINITIAL); return MotokoTypes.MODULE; }
     {OBJECT}                  { yybegin(YYINITIAL); return MotokoTypes.OBJECT; }
+    {PRIVATE}                 { yybegin(YYINITIAL); return MotokoTypes.PRIVATE; }
     {PUBLIC}                  { yybegin(YYINITIAL); return MotokoTypes.PUBLIC; }
     {SHARED}                  { yybegin(YYINITIAL); return MotokoTypes.SHARED; }
     {SYSTEM}                  { yybegin(YYINITIAL); return MotokoTypes.SYSTEM; }
@@ -265,6 +266,7 @@ WRAPPING_POW="**%"
     {R_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.R_SQUARE; }
     {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
     {SLASH}                   { yybegin(YYINITIAL); return MotokoTypes.SLASH; }
+    {STABLE}                  { yybegin(YYINITIAL); return MotokoTypes.STABLE; }
     {STAR}                    { yybegin(YYINITIAL); return MotokoTypes.STAR; }
 
 

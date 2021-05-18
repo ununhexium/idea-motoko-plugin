@@ -52,7 +52,6 @@ sort ::=
 shared_pat ::=
     SHARED QUERY? pat_plain?
   | QUERY pat_plain?
-  | empty
 
 //<typ_obj> ::=
 //    '{' <list(<typ_field>, ';')> '}'
@@ -620,7 +619,7 @@ block ::=
 //    <vis> <stab> <dec>
 
 dec_field ::=
-    visibility stability dec
+    vis stab dec
 
 //<vis> ::=
 //    <empty>
@@ -628,7 +627,7 @@ dec_field ::=
 //    'public'
 //    'system'
 
-visibility ::=
+vis ::=
     PRIVATE
   | PUBLIC
   | SYSTEM
@@ -639,7 +638,7 @@ visibility ::=
 //    'flexible'
 //    'stable'
 
-stability ::=
+stab ::=
     FLEXIBLE
   | STABLE
   | empty
@@ -716,10 +715,9 @@ dec ::=
   | LET pat EQ exp
   | VAR ID (COLUMN typ)? EQ exp
   | sort ID? EQ? obj_body
-  | shared_pat? visibility FUNC ID? typ_params? pat_plain (':' typ)? func_body
+  | shared_pat? vis FUNC ID? typ_params? pat (COLUMN typ)? func_body
   | TYPE ID typ_params? EQ typ
-//TODO: generics  | shared_pat_opt obj_sort? CLASS ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? pat_plain (COLUMN typ)? class_body
-  | shared_pat sort? visibility CLASS ID? pat_plain (COLUMN typ)? class_body
+  | shared_pat? sort? CLASS ID? typ_params? pat (COLUMN typ)? class_body
 
 //<func_body> ::=
 //    '=' <exp>
@@ -729,15 +727,15 @@ func_body ::=
     EQ exp
   | block
 
-//<obj_body> ::=
-//    '{' <list(<dec_field>, ';')> '}'
+//<obj-body> ::=           object body
+//   { <dec-field>;* }       field declarations
 
 obj_body ::=
     L_CURL (dec_field SEMI)* R_CURL
 
-//<class_body> ::=
-//    '=' <id>? <obj_body>
-//    <obj_body>
+//<class-body> ::=         class body
+//    = <id>? <obj-body>     object body, optionally binding <id> to _this_ instance
+//    <obj-body>             object body
 
 class_body ::=
     EQ ID? obj_body
