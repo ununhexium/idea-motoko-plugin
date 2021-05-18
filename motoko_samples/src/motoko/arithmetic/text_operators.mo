@@ -1,0 +1,1 @@
+let concatenated = "a" # "b";

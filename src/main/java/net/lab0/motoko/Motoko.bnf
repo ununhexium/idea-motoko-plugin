@@ -414,6 +414,7 @@ private add_group ::=
   | exp_minus
   | exp_wrapping_plus
   | exp_wrapping_minus
+  | exp_concat
 
 exp_minus ::=
     exp MINUS exp
@@ -426,6 +427,9 @@ exp_wrapping_minus ::=
 
 exp_wrapping_plus ::=
     exp WRAPPING_SUB exp
+
+exp_concat ::=
+    exp HASH exp
 
 //<exp_nondec> ::=
 //    <exp_bin>

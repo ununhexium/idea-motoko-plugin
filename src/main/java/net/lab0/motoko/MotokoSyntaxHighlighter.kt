@@ -68,6 +68,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.EQ,
       MotokoTypes.EQEQ,
       MotokoTypes.GTE,
+      MotokoTypes.HASH,
       MotokoTypes.LTE,
       MotokoTypes.L_ANGLE,
       MotokoTypes.L_CURL,

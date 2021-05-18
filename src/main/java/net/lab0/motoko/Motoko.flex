@@ -83,6 +83,7 @@ FLEXIBLE="flexible"
 FOR="for"
 FUNC="func"
 GTE=">="
+HASH="#"
 IF="if"
 IGNORE="ignore"
 IN="in"
@@ -164,6 +165,7 @@ WRAPPING_POW="**%"
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
     {FOR}                     { yybegin(YYINITIAL); return MotokoTypes.FOR; }
     {FUNC}                    { yybegin(YYINITIAL); return MotokoTypes.FUNC; }
+    {HASH}                    { yybegin(YYINITIAL); return MotokoTypes.HASH; }
     {IF}                      { yybegin(YYINITIAL); return MotokoTypes.IF; }
     {IN}                      { yybegin(YYINITIAL); return MotokoTypes.IN; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
