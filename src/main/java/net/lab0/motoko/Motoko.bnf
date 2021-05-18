@@ -749,7 +749,10 @@ class_body ::=
 //<imp> ::=
 //    'import' <id>? '='? <text>
 
-imp ::= IMPORT ID? EQ? TEXT SEMI
+imp ::= IMPORT ID? EQ? url SEMI
+
+url ::=
+    TEXT
 
 private imp_list ::= imp imp_list*
 private dec_list ::= dec SEMI dec_list*
