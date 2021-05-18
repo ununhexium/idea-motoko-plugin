@@ -168,21 +168,9 @@ WRAPPING_POW="**%"
 
 %%
 
-/*
-! (negation)
-
-Matches everything but the strings matched by a.
-Use with care: the construction of !a involves an additional, possibly exponential NFA to DFA transformation on the NFA for a.
-Note that with negation and union you also have (by applying DeMorgan) intersection and set difference:
-the intersection of a and b is !(!a|!b),
-the expression that matches everything of a not matched by b is !(!a|b)
- */
-//<WAITING_VALUE> !(!({CRLF}({CRLF}|{WHITE_SPACE})+)|({LT} | {GT}))               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-//<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-//<WAITING_VALUE> !(!({WHITE_SPACE}+)|({LT} | {GT}))                                { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-<WAITING_VALUE> {WHITE_SPACE}+ / !("< "|"> ")                                { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+<WAITING_VALUE> {WHITE_SPACE}+ / !("< "|"> "|">>")            { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
 <YYINITIAL> {
     // comments

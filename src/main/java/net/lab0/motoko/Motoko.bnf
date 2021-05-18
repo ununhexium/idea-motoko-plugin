@@ -883,7 +883,7 @@ dec ::=
   | LET pat EQ exp
   | VAR ID (COLUMN typ)? EQ exp
   | sort ID? EQ? obj_body
-  | shared_pat? vis FUNC ID? typ_params? pat (COLUMN typ)? func_body
+  | shared_pat? FUNC ID? typ_params? pat (COLUMN typ)? func_body
   | TYPE ID typ_params? EQ typ
   | shared_pat? sort? CLASS ID? typ_params? pat (COLUMN typ)? class_body
 
