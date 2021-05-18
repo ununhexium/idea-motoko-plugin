@@ -132,6 +132,7 @@ POW="**"
 PRIVATE="private"
 PUBLIC="public"
 QUERY="query"
+QUESTION="?"
 R_ANGLE=">"
 R_CURL="}"
 R_PAREN=")"
@@ -201,12 +202,6 @@ WRAPPING_POW="**%"
     {TYPE}                    { yybegin(YYINITIAL); return MotokoTypes.TYPE; }
     {VAR}                     { yybegin(YYINITIAL); return MotokoTypes.VAR; }
 
-    // comparators
-    {GTE}                     { yybegin(YYINITIAL); return MotokoTypes.GTE; }
-    {LTE}                     { yybegin(YYINITIAL); return MotokoTypes.LTE; }
-    {NEQ}                     { yybegin(YYINITIAL); return MotokoTypes.NEQ; }
-    {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
-
     // symbols
     {IN_PLACE_UPDATE}                               { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_UPDATE; }
     {IN_PLACE_ADD}                                  { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ADD; }
@@ -243,6 +238,12 @@ WRAPPING_POW="**%"
 
     {TYPE_CONSTRAINT}         { yybegin(YYINITIAL); return MotokoTypes.TYPE_CONSTRAINT; }
 
+    // comparators
+    {GTE}                     { yybegin(YYINITIAL); return MotokoTypes.GTE; }
+    {LTE}                     { yybegin(YYINITIAL); return MotokoTypes.LTE; }
+    {NEQ}                     { yybegin(YYINITIAL); return MotokoTypes.NEQ; }
+    {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
+
     {AMPERSAND}               { yybegin(YYINITIAL); return MotokoTypes.AMPERSAND; }
     {AND}                     { yybegin(YYINITIAL); return MotokoTypes.AND; }
     {CARRET}                  { yybegin(YYINITIAL); return MotokoTypes.CARRET; }
@@ -260,6 +261,7 @@ WRAPPING_POW="**%"
     {PLUS}                    { yybegin(YYINITIAL); return MotokoTypes.PLUS; }
     {POINT}                   { yybegin(YYINITIAL); return MotokoTypes.POINT; }
     {QUERY}                   { yybegin(YYINITIAL); return MotokoTypes.QUERY; }
+    {QUESTION}                { yybegin(YYINITIAL); return MotokoTypes.QUESTION; }
     {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
     {R_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
