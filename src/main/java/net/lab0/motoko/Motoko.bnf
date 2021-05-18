@@ -89,6 +89,20 @@ typ_un ::=
 typ_pre ::=
     typ_un
 
+//<typ-params> ::=          type parameters
+//  < typ-param,* >
+
+typ_params ::=
+    L_ANGLE typ_param (COMA typ_param)* R_ANGLE
+
+//<typ-param>
+//  <id> <: <typ>           constrained type parameter
+//  <id>                    unconstrained type parameter
+
+typ_param ::=
+    ID TYPE_CONSTRAINT typ
+  | ID
+
 //<typ> ::=
 //    <typ_pre>
 //    <func_sort_opt> ('<' <list(<typ_bind>, ',')> '>')? <typ_un> '->' <typ>
@@ -702,10 +716,8 @@ dec ::=
   | LET pat EQ exp
   | VAR ID (COLUMN typ)? EQ exp
   | sort ID? EQ? obj_body
-//TODO: generics  | shared_pat_opt FUNC ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? <pat_plain> (':' <typ>)? func_body
-  | shared_pat? visibility FUNC ID? pat_plain (':' typ)? func_body
-// TODO support generics  | TYPE ID (L_ANGLE (typ_bind COMA)* R_ANGLE)? EQ typ
-  | TYPE ID EQ typ
+  | shared_pat? visibility FUNC ID? typ_params? pat_plain (':' typ)? func_body
+  | TYPE ID typ_params? EQ typ
 //TODO: generics  | shared_pat_opt obj_sort? CLASS ID? (L_ANGLE (typ_bind COMA)* R_ANGLE)? pat_plain (COLUMN typ)? class_body
   | shared_pat sort? visibility CLASS ID? pat_plain (COLUMN typ)? class_body
 

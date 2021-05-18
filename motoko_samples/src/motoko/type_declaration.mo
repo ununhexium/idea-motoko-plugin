@@ -1,1 +1,0 @@
-type NewProfile = Types.NewProfile;

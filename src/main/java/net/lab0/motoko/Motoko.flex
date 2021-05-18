@@ -149,6 +149,7 @@ SYSTEM="system"
 TRUE="true"
 TRY="try"
 TYPE="type"
+TYPE_CONSTRAINT="<:"
 UNDERSCORE="_"
 VAR="var"
 WHILE="while"
@@ -239,6 +240,8 @@ WRAPPING_POW="**%"
 
     {POW}                     { yybegin(YYINITIAL); return MotokoTypes.POW; }
 
+    {TYPE_CONSTRAINT}         { yybegin(YYINITIAL); return MotokoTypes.TYPE_CONSTRAINT; }
+
     {AMPERSAND}               { yybegin(YYINITIAL); return MotokoTypes.AMPERSAND; }
     {AND}                     { yybegin(YYINITIAL); return MotokoTypes.AND; }
     {CARRET}                  { yybegin(YYINITIAL); return MotokoTypes.CARRET; }
@@ -255,6 +258,7 @@ WRAPPING_POW="**%"
     {PIPE}                    { yybegin(YYINITIAL); return MotokoTypes.PIPE; }
     {PLUS}                    { yybegin(YYINITIAL); return MotokoTypes.PLUS; }
     {POINT}                   { yybegin(YYINITIAL); return MotokoTypes.POINT; }
+    {QUERY}                   { yybegin(YYINITIAL); return MotokoTypes.QUERY; }
     {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
     {R_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
