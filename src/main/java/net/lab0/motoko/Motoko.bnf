@@ -203,9 +203,8 @@ typ_tag ::=
     HASH ID COLUMN typ
   | HASH ID
 
-//<typ_args> ::=
-//    '<' <list(<typ>, ',')> '>'
-
+//<typ-args> ::=                                type arguments
+//  < <typ>,* >
 typ_args ::=
     L_ANGLE typ? (COMA typ)* R_ANGLE
 
@@ -369,13 +368,13 @@ exp_neq ::=
     exp NEQ exp
 
 exp_lt ::=
-    exp L_ANGLE exp
+    exp LT exp
 
 exp_lte ::=
     exp LTE exp
 
 exp_gt ::=
-    exp R_ANGLE exp
+    exp GT exp
 
 exp_gte ::=
     exp GTE exp

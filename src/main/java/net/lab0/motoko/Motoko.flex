@@ -115,14 +115,14 @@ L_PAREN="("
 L_ROTATE="<<>"
 L_SHIFT="<<"
 L_SQUARE="["
-//LT="<"
 LABEL="label"
 LET="let"
 LOOP="loop"
+LT=" < "
 LTE="<="
 MINUS="-"
 MODULE="module"
-//GT=">"
+GT=" > "
 NEQ="!="
 NOT="not"
 NULL="null"
@@ -141,7 +141,7 @@ R_ANGLE=">"
 R_CURL="}"
 R_PAREN=")"
 R_ROTATE="<>>"
-R_SHIFT=">>"
+R_SHIFT=" >>"
 R_SQUARE="]"
 RETURN="return"
 SEMI=";"
@@ -170,7 +170,8 @@ WRAPPING_POW="**%"
 
 <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-<WAITING_VALUE> {WHITE_SPACE}+ / !("< "|"> "|">>")            { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+// special cases for the operators containing a space
+<WAITING_VALUE> {WHITE_SPACE}+ / !("< " | "> " | ">>")            { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
 <YYINITIAL> {
     // comments
@@ -260,8 +261,8 @@ WRAPPING_POW="**%"
     // comparators
     {GTE}                     { yybegin(YYINITIAL); return MotokoTypes.GTE; }
     {LTE}                     { yybegin(YYINITIAL); return MotokoTypes.LTE; }
-//    {GT}                      { yybegin(YYINITIAL); return MotokoTypes.GT; }
-//    {LT}                      { yybegin(YYINITIAL); return MotokoTypes.LT; }
+    {GT}                      { yybegin(YYINITIAL); return MotokoTypes.GT; }
+    {LT}                      { yybegin(YYINITIAL); return MotokoTypes.LT; }
     {NEQ}                     { yybegin(YYINITIAL); return MotokoTypes.NEQ; }
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
