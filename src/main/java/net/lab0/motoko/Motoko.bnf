@@ -50,8 +50,7 @@ sort ::=
 //    'query' <pat_plain>?
 
 shared_pat ::=
-    SHARED QUERY? pat_plain?
-  | QUERY pat_plain?
+    SHARED QUERY? pat?
 
 //<typ_obj> ::=
 //    '{' <list(<typ_field>, ';')> '}'
@@ -615,17 +614,17 @@ block ::=
 //    'var'? <id> (':' <typ>)? '=' <exp>
 
 
-//<dec_field> ::=
-//    <vis> <stab> <dec>
+
+//<dec-field> ::=              object declaration fields
+//  <vis>? <stab>? <dec>       field
 
 dec_field ::=
     vis stab dec
 
-//<vis> ::=
-//    <empty>
-//    'private'
-//    'public'
-//    'system'
+//<vis> ::=                    field visibility
+//  public
+//  private
+//  system
 
 vis ::=
     PRIVATE
@@ -633,15 +632,13 @@ vis ::=
   | SYSTEM
   | empty
 
-//<stab> ::=
-//    <empty>
-//    'flexible'
-//    'stable'
+//<stab> ::=                   field stability (actor only)
+//  stable
+//  flexible
 
 stab ::=
     FLEXIBLE
   | STABLE
-  | empty
 
 //<pat_plain> ::=
 //    '_'
@@ -701,14 +698,14 @@ pat ::=
 //    <id> (':' <typ>)?
 //    <id> (':' <typ>)? '=' <pat>
 
-//<dec> ::=
-//  <exp>
-//  let <pat> = <exp>
-//  var <id> (: <typ>)? = <exp>
-//  <sort> <id>? =? <obj-body>
-//  <shared-pat>? func <id>? <typ-params>? <pat> (: <typ>)? =? <exp>
-//  type <id> <typ-params>? = <typ>
-//  <shared-pat>? <sort>? class <id>? <typ-params>? <pat> (: <typ>)? <class-body>
+//<dec> ::=                                                                                declaration
+//  <exp>                                                                                  expression
+//  let <pat> = <exp>                                                                      immutable
+//  var <id> (: <typ>)? = <exp>                                                            mutable
+//  <sort> <id>? =? <obj-body>                                                             object
+//  <shared-pat>? func <id>? <typ-params>? <pat> (: <typ>)? =? <exp>                       function
+//  type <id> <typ-params>? = <typ>                                                        type
+//  <shared-pat>? <sort>? class <id>? <typ-params>? <pat> (: <typ>)? <class-body>          class
 
 dec ::=
     exp
@@ -727,15 +724,15 @@ func_body ::=
     EQ exp
   | block
 
-//<obj-body> ::=           object body
-//   { <dec-field>;* }       field declarations
+//<obj-body> ::=               object body
+//   { <dec-field>;* }         field declarations
 
 obj_body ::=
     L_CURL (dec_field SEMI)* R_CURL
 
-//<class-body> ::=         class body
-//    = <id>? <obj-body>     object body, optionally binding <id> to _this_ instance
-//    <obj-body>             object body
+//<class-body> ::=             class body
+//    = <id>? <obj-body>       object body, optionally binding <id> to _this_ instance
+//    <obj-body>               object body
 
 class_body ::=
     EQ ID? obj_body

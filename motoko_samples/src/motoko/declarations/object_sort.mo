@@ -1,6 +1,13 @@
 object {
 };
 
+module {
+    public class Class(){};
+};
+
+actor {
+};
+
 object Object {
 };
 
