@@ -61,6 +61,7 @@ SIGN=({PLUS} | {MINUS})
 ACTOR="actor"
 AMPERSAND="&"
 AND="and"
+ARROW="->"
 ASSERT="assert"
 ASYNC="async"      // TODO: not in the keywords list?
 AWAIT="await"
@@ -275,6 +276,8 @@ the expression that matches everything of a not matched by b is !(!a|b)
 //    {LT}                      { yybegin(YYINITIAL); return MotokoTypes.LT; }
     {NEQ}                     { yybegin(YYINITIAL); return MotokoTypes.NEQ; }
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
+
+    {ARROW}                   { yybegin(YYINITIAL); return MotokoTypes.ARROW; }
 
     {AMPERSAND}               { yybegin(YYINITIAL); return MotokoTypes.AMPERSAND; }
     {AND}                     { yybegin(YYINITIAL); return MotokoTypes.AND; }

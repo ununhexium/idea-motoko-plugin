@@ -80,6 +80,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
     val OPERATION_SIGNS = listOf(
       MotokoTypes.AMPERSAND,
       MotokoTypes.AND,
+      MotokoTypes.ARROW,
       MotokoTypes.EXCLAMATION,
       MotokoTypes.CARRET,
       MotokoTypes.COLUMN,

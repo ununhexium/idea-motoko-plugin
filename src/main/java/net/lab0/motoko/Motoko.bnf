@@ -4,6 +4,8 @@
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
   extends("exp_.*")=exp
   extends("pat_.*")=pat
+  extends("path_.*")=path
+  extends("typ_.*")=typ
 
   psiClassPrefix="Motoko"
   psiImplClassSuffix="Impl"
@@ -18,8 +20,6 @@
 }
 
 motokoFile ::= prog
-
-empty ::=
 
 //<list(X, SEP)> ::=
 //    <empty>
@@ -52,41 +52,6 @@ sort ::=
 shared_pat ::=
     SHARED QUERY? pat?
 
-//<typ_obj> ::=
-//    '{' <list(<typ_field>, ';')> '}'
-//
-//<typ_variant> ::=
-//    '{' '#' '}'
-//    '{' <list1(<typ_tag>, ';')> '}'
-
-//<typ_nullary> ::=
-//    '(' <list(<typ_item>, ',')> ')'
-//    <id> ('.' <id>)* <typ_args>?
-//    '[' 'var'? <typ> ']'
-//    <typ_obj>
-//    <typ_variant>
-
-typ_nullary ::=
-    L_PAREN typ_item? (COMA typ_item)* R_PAREN
-  | ID (POINT ID)* typ_args?
-  | L_SQUARE VAR? typ R_SQUARE
-
-//<typ_un> ::=
-//    <typ_nullary>
-//    '?' <typ_un>
-
-typ_un ::=
-    typ_nullary
-  | '?' typ_un
-
-//<typ_pre> ::=
-//    <typ_un>
-//    'async' <typ_pre>
-//    <obj_sort> <typ_obj>
-
-typ_pre ::=
-    typ_un
-
 //<typ-params> ::=          type parameters
 //  < typ-param,* >
 
@@ -101,20 +66,142 @@ typ_param ::=
     ID TYPE_CONSTRAINT typ
   | ID
 
-//<typ> ::=
-//    <typ_pre>
-//    <func_sort_opt> ('<' <list(<typ_bind>, ',')> '>')? <typ_un> '->' <typ>
-
+//<typ> ::=                                     type expressions
 typ ::=
-    typ_pre
+    typ_constructor
+  | typ_object
+  | typ_variant
+  | typ_empty_variant
+  | typ_array
+  | typ_null
+  | typ_option
+  | typ_function
+  | typ_future
+  | typ_tuple
+  | typ_top
+  | typ_bottom
+  | typ_error
+  | typ_parenthesised
 
-//<typ_item> ::=
-//    <id> ':' <typ>
-//    <typ>
+//parent: <typ>
+//  <path> <typ-args>?                            constructor
+typ_constructor ::=
+    path typ_args?
 
-typ_item ::=
+//parent: <typ>
+//  <sort>? { <typ-field>;* }                     object
+typ_object ::=
+   sort? L_CURL (typ_field SEMI)* L_CURL   // TODO: add sample
+
+//parent: <typ>
+//  { <typ-tag>;* }                               variant
+typ_variant ::=
+    L_CURL (typ_tag SEMI)* R_CURL           // TODO: add sample
+
+//parent: <typ>
+//  { # }                                         empty variant
+typ_empty_variant ::=
+    L_CURL HASH R_CURL
+
+//parent: <typ>
+//  [ var? <typ> ]                                array
+typ_array ::=
+    L_SQUARE VAR? typ R_SQUARE
+
+//parent: <typ>
+//  Null                                          null type
+typ_null ::=
+    "Null"
+
+//parent: <typ>
+//  ? <typ>                                       option
+typ_option ::=
+    QUESTION typ
+
+//parent: <typ>
+//  <shared>? <typ-params>? <typ> -> <typ>        function
+private typ_function ::=
+// hacky split in 2 to avoid a left recursion issue with <shared>
+   typ_function_non_shared
+ | typ_function_shared
+
+typ_function_non_shared ::=
+    typ ARROW typ
+
+typ_function_shared ::=
+    shared_prefix typ ARROW typ
+
+//  <shared> ::=                                 shared function type qualifier
+//    shared query?
+shared_prefix ::=
+    SHARED QUERY?
+
+//parent: <typ>
+//  async <typ>                                   future
+ typ_future ::=
+    ASYNC typ
+
+//parent: <typ>
+//  ( ((<id> :)? <typ>),* )                       tuple
+ typ_tuple ::=
+    L_PAREN typ_tuple_single (COMA typ_tuple_single)* R_PAREN
+
+typ_tuple_single ::=
+    (ID COLUMN)? typ
+
+//parent: <typ>
+//  Any                                           top
+ typ_top ::=
+    "Any"
+
+//parent: <typ>
+//  None                                          bottom
+ typ_bottom ::=
+    "None"
+
+//parent: <typ>
+//  Error                                         errors/exceptions
+ typ_error ::=
+    "Error"
+
+//parent: <typ>
+//  ( type )                                      parenthesized type
+ typ_parenthesised ::=
+    L_PAREN typ R_PAREN
+
+
+//  | L_CURL  R_CURL
+
+//<path> ::=                                   paths
+//  <id>                                         type identifier
+//  <path> . <id>                                projection
+
+path ::=
+    path_id
+  | path_projection
+
+path_id ::=
+    ID
+
+path_projection ::=
+    path POINT ID
+
+
+//<typ-field> ::=                               object type fields
+//  <id> : <typ>                                  immutable
+//  var <id> : <typ>                              mutable
+// TODO: sugar
+//  <id> <typ-params>? <typ1> : <typ2>            function (short-hand)
+typ_field ::=
     ID COLUMN typ
-  | typ
+  | VAR ID COLUMN typ
+
+//<typ-tag> ::=                                 variant type fields
+//  # <id> : <typ>                                tag
+//  # <id>                                        unit tag (short-hand)
+typ_tag ::=
+    HASH ID COLUMN typ
+  | HASH ID
 
 //<typ_args> ::=
 //    '<' <list(<typ>, ',')> '>'
@@ -707,7 +794,6 @@ vis ::=
     PRIVATE
   | PUBLIC
   | SYSTEM
-  | empty
 
 //<stab> ::=                   field stability (actor only)
 //  stable

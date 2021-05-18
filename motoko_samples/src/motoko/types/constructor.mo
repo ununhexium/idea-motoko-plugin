@@ -1,0 +1,1 @@
+let typed: fully.qualified.Name = true;
