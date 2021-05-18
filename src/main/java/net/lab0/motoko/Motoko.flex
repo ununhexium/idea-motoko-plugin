@@ -63,8 +63,9 @@ ACTOR="actor"
 AMPERSAND="&"
 AND="and"
 ASSERT="assert"
+ASYNC="async"      // TODO: not in the keywords list?
 AWAIT="await"
-BANG="!"
+EXCLAMATION="!"
 BREAK="break"
 CARRET="^"
 CASE="case"
@@ -75,6 +76,7 @@ COMA=","
 CONTINUE="continue"
 DEBUG="debug"
 DEBUG_SHOW="debug_show"
+DO="do"             // TODO: not in keywords?
 EQEQ="=="
 EQ="="
 ELSE="else"
@@ -147,6 +149,7 @@ STABLE="stable"
 STAR="*"
 SWITCH="switch"
 SYSTEM="system"
+THROW="throw"              // TODO: not in the keywords?
 TRUE="true"
 TRY="try"
 TYPE="type"
@@ -180,18 +183,26 @@ WRAPPING_POW="**%"
 
     // keywords
     {ACTOR}                   { yybegin(YYINITIAL); return MotokoTypes.ACTOR; }
-    {BANG}                    { yybegin(YYINITIAL); return MotokoTypes.BANG; }
+    {ASSERT}                  { yybegin(YYINITIAL); return MotokoTypes.ASSERT; }
+    {ASYNC}                   { yybegin(YYINITIAL); return MotokoTypes.ASYNC; }
+    {AWAIT}                   { yybegin(YYINITIAL); return MotokoTypes.AWAIT; }
+    {BREAK}                   { yybegin(YYINITIAL); return MotokoTypes.BREAK; }
     {CASE}                    { yybegin(YYINITIAL); return MotokoTypes.CASE; }
+    {CATCH}                   { yybegin(YYINITIAL); return MotokoTypes.CATCH; }
     {CLASS}                   { yybegin(YYINITIAL); return MotokoTypes.CLASS; }
+    {DO}                      { yybegin(YYINITIAL); return MotokoTypes.DO; }
     {ELSE}                    { yybegin(YYINITIAL); return MotokoTypes.ELSE; }
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
     {FOR}                     { yybegin(YYINITIAL); return MotokoTypes.FOR; }
     {FUNC}                    { yybegin(YYINITIAL); return MotokoTypes.FUNC; }
     {HASH}                    { yybegin(YYINITIAL); return MotokoTypes.HASH; }
     {IF}                      { yybegin(YYINITIAL); return MotokoTypes.IF; }
+    {IGNORE}                  { yybegin(YYINITIAL); return MotokoTypes.IGNORE; }
     {IN}                      { yybegin(YYINITIAL); return MotokoTypes.IN; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
+    {LABEL}                   { yybegin(YYINITIAL); return MotokoTypes.LABEL; }
     {LET}                     { yybegin(YYINITIAL); return MotokoTypes.LET; }
+    {LOOP}                    { yybegin(YYINITIAL); return MotokoTypes.LOOP; }
     {MODULE}                  { yybegin(YYINITIAL); return MotokoTypes.MODULE; }
     {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
     {NOT}                     { yybegin(YYINITIAL); return MotokoTypes.NOT; }
@@ -201,9 +212,12 @@ WRAPPING_POW="**%"
     {SHARED}                  { yybegin(YYINITIAL); return MotokoTypes.SHARED; }
     {SWITCH}                  { yybegin(YYINITIAL); return MotokoTypes.SWITCH; }
     {SYSTEM}                  { yybegin(YYINITIAL); return MotokoTypes.SYSTEM; }
+    {THROW}                   { yybegin(YYINITIAL); return MotokoTypes.THROW; }
     {TRUE}                    { yybegin(YYINITIAL); return MotokoTypes.TRUE; }
+    {TRY}                     { yybegin(YYINITIAL); return MotokoTypes.TRY; }
     {TYPE}                    { yybegin(YYINITIAL); return MotokoTypes.TYPE; }
     {VAR}                     { yybegin(YYINITIAL); return MotokoTypes.VAR; }
+    {WHILE}                   { yybegin(YYINITIAL); return MotokoTypes.WHILE; }
 
     // symbols
     {IN_PLACE_UPDATE}                               { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_UPDATE; }
@@ -249,9 +263,11 @@ WRAPPING_POW="**%"
 
     {AMPERSAND}               { yybegin(YYINITIAL); return MotokoTypes.AMPERSAND; }
     {AND}                     { yybegin(YYINITIAL); return MotokoTypes.AND; }
+    {EXCLAMATION}             { yybegin(YYINITIAL); return MotokoTypes.EXCLAMATION; }
     {CARRET}                  { yybegin(YYINITIAL); return MotokoTypes.CARRET; }
     {COLUMN}                  { yybegin(YYINITIAL); return MotokoTypes.COLUMN; }
     {COMA}                    { yybegin(YYINITIAL); return MotokoTypes.COMA; }
+    {CONTINUE}                { yybegin(YYINITIAL); return MotokoTypes.CONTINUE; }
     {EQEQ}                    { yybegin(YYINITIAL); return MotokoTypes.EQEQ; }
     {L_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.L_ANGLE; }
     {L_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.L_CURL; }
@@ -269,6 +285,7 @@ WRAPPING_POW="**%"
     {R_CURL}                  { yybegin(YYINITIAL); return MotokoTypes.R_CURL; }
     {R_PAREN}                 { yybegin(YYINITIAL); return MotokoTypes.R_PAREN; }
     {R_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.R_SQUARE; }
+    {RETURN}                  { yybegin(YYINITIAL); return MotokoTypes.RETURN; }
     {SEMI}                    { yybegin(YYINITIAL); return MotokoTypes.SEMI; }
     {SLASH}                   { yybegin(YYINITIAL); return MotokoTypes.SLASH; }
     {STABLE}                  { yybegin(YYINITIAL); return MotokoTypes.STABLE; }

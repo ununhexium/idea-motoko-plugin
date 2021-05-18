@@ -189,7 +189,85 @@ unop ::=
 //    ' > '
 //    '>='
 
-private relational_group ::=
+//<exp> ::=                                                 expressions
+// the original grammar entries have been split over the grammar nodes below
+exp ::=
+    exp_id
+  | exp_lit
+  | exp_unop
+  | exp_binop
+  | exp_relop
+  | exp_tuple
+  | exp_tuple_projection
+  | exp_option_injection
+  | exp_object
+  | exp_variant_injection
+  | exp_object_projection
+  | exp_assignment
+// TODO: isn't this already covered by the binary version?
+//  | exp_unary_update
+  | exp_binary_update
+  | exp_array
+  | exp_array_indexing
+// TODO: is this a lambda/closure? Where is it defined?
+//  | exp_function_expression
+//  | exp_function_call
+  | exp_negation
+  | exp_conjunction
+  | exp_disjunction
+  | exp_conditional
+  | exp_switch
+  | exp_while
+  | exp_loop
+  | exp_iteration
+  | exp_label
+  | exp_break
+  | exp_continue
+  | exp_return
+  | exp_async
+  | exp_await
+  | exp_throw
+  | exp_try_catch
+  | exp_assertion
+  | exp_type_annotation
+// TODO disabled because of left-recursion. Is this necessary?
+//  | exp_dec
+  | exp_ignore
+  | exp_block_as_expression
+  | exp_option_block
+  | exp_null_break
+  | exp_parentheses
+
+//parent node:<exp>
+// <id>                                                    variable
+exp_id ::=
+    ID
+
+//parent node:<exp>
+// <lit>                                                   literal
+exp_lit ::=
+    lit
+
+//parent node:<exp>
+// <unop> <exp>                                            unary operator
+exp_unop ::=
+    unop exp
+
+//parent node:<exp>
+// <exp> <binop> <exp>                                     binary operator
+private exp_binop ::=
+    binop_power_group
+  | binop_shift_group
+  | binop_bitwise_xor_group
+  | binop_bitwise_and_group
+  | binop_bitwise_or_group
+  | binop_multiply_group
+  | binop_add_group
+
+
+//parent node:<exp>
+//   <exp> <relop> <exp>                            binary relational operator
+private exp_relop ::=
     exp_eq
   | exp_neq
   | exp_lt
@@ -224,278 +302,12 @@ exp_or ::=
 exp_column ::=
     exp COLUMN typ
 
-//<unassign> ::=
-//    '+='
-//    '-='
-//    '^='
-
-//<binassign> ::=
-//    '+='
-//    '-='
-//    '*='
-//    '/='
-//    '%='
-//    '**-'
-//    '+%='
-//    '-%='
-//    '*%='
-//    '**%='
-//    '&='
-//    '|='
-//    '^='
-//    '<<='
-//    '>>='
-//    '<<>='
-//    '<>>='
-//    '@='
-
-//<exp_obj> ::=
-//    '{' <list(<exp_field>, ';')> '}'
-
-//<exp_plain> ::=
-//    <lit>
-//    '(' <list(<exp>, ',')> ')'
-
-exp_plain ::=
-    lit
-  | exp_parens
-
-private exp_parens ::=
-    exp_parens_real
-
-exp_parens_real ::=
-    L_PAREN exp? (COMA exp)* R_PAREN
-
-//<exp_nullary> ::=
-//    <exp_obj>
-//    <exp_plain>
-//    <id>
-
-private exp_nullary ::=
-//    exp_obj
-    exp_plain
-  | exp_id
-
-//<exp_post> ::=
-//    <exp_nullary>
-//    '[' 'var'? <list(<exp_nonvar>, ',')> ']'
-//    <exp_post> '[' <exp> ']'
-//    <exp_post> '.' <nat>
-//    <exp_post> '.' <id>
-//    <exp_post> ('<' <list(<typ>, ',')> '>')? <exp_nullary>
-//    <exp_post> BANG
-
-private exp_post ::=
-    exp_nullary
-//  | exp_post_array
-//  | exp_post_array
-//  | exp_post_id
-//  | exp_post_ref
-//  | exp_post_generics
-//  | exp_post_bang
-
-// Ref: '[' 'var'? <list(<exp_nonvar>, ',')> ']'
-exp_post_array ::=
-    L_SQUARE VAR? exp_nonvar? (COMA exp_nonvar)* R_SQUARE
-
-// Ref: <exp_post> '[' <exp> ']'
-exp_post_array ::=
-    exp L_SQUARE exp R_SQUARE
-
-// Ugly hack because resursing on exp_post like in the spec is not possible (private)
-// Therefore recursing directly on "function call"-like expression
-exp_post_ref ::=
-    exp exp_parens
-
-// Ref: <exp_post> '.' <id>
-exp_post_id ::=
-    exp POINT ID
-
-// Ref: <exp_post> ('<' <list(<typ>, ',')> '>')? <exp_nullary>
-// TODO: must be optional. But making it optional makes an infinite recursion.
-exp_post_generics ::=
-    exp (L_ANGLE typ (COMA typ)* R_ANGLE) exp_nullary
-
-// Ref: <exp_post> BANG
-exp_post_bang ::=
-    exp BANG
-
-//<exp_un> ::=
-//    <exp_post>
-//    '#' <id>
-//    '#' <id> <exp_nullary>
-//    '?' <exp_un>
-//    <unop> <exp_un>
-//    <unassign> <exp_un>
-//    'actor' <exp_plain>
-//    'not' <exp_un>
-//    'debug_show' <exp_un>
-
-
-private exp_un ::=
-    exp_post
-
-
-//<exp_bin> ::=
-//    <exp_un>
-//    <exp_bin> <binop> <exp_bin>
-//    <exp_bin> <relop> <exp_bin>
-//    <exp_bin> 'and' <exp_bin>
-//    <exp_bin> 'or' <exp_bin>
-//    <exp_bin> ':' <typ>
-
-
-//<exp_nondec> ::=
-//    <exp_bin>
-//    <exp_bin> ':=' <exp>
-//    <exp_bin> <binassign> <exp>
-//    'return' <exp>?
-//    'async' <exp_nest>
-//    'await' <exp_nest>
-//    'assert' <exp_nest>
-//    'label' <id> (':' <typ>)? <exp_nest>
-//    'break' <id> <exp_nullary>?
-//    'continue' <id>
-//    'debug' <exp_nest>
-//    'if' <exp_nullary> <exp_nest>
-//    'if' <exp_nullary> <exp_nest> 'else' <exp_nest>
-//    'try' <exp_nest> <catch>
-//    'throw' <exp_nest>
-//    'switch' <exp_nullary> '{' <list(<case>, ';')> '}'
-//    'while' <exp_nullary> <exp_nest>
-//    'loop' <exp_nest>
-//    'loop' <exp_nest> 'while' <exp_nest>
-//    'for' '(' <pat> 'in' <exp> ')' <exp_nest>
-//    'ignore' <exp_nest>
-//    'do' <block>
-//    'do' '?' <block>
-
-private exp_nondec ::=
-    exp_bin_inplace_update
-  | exp_binassign
-  | exp_bin_if
-  | exp_bin_for
-
-exp_bin_inplace_update ::=
-    exp IN_PLACE_UPDATE exp
-
-exp_bin_if ::=
-    IF exp_nullary exp_nest ELSE exp_nest
-  | IF exp_nullary exp_nest
-
-// Ref: 'for' '(' <pat> 'in' <exp> ')' <exp_nest>
-exp_bin_for ::=
-    FOR L_PAREN pat IN exp R_PAREN exp_nest
-
-//<exp_nonvar> ::=
-//    <exp_nondec>
-//    <dec_nonvar>
-
-private exp_nonvar ::=
-    exp_nondec
-//  | dec_nonvar
-
-//<exp> ::=                                                 expressions
-// the original grammar entries have been split over the grammar nodes below
-//
-
-//parent node:<exp>
-// while <exp> <block-or-exp>                              while loop
-//parent node:<exp>
-// loop <block-or-exp> (while <exp>)?                      loop
-//parent node:<exp>
-// for ( <pat> in <exp> ) <block-or-exp>                   iteration
-//parent node:<exp>
-// label <id> (: <typ>)? <block-or-exp>                    label
-//parent node:<exp>
-// break <id> <exp>?                                       break
-//parent node:<exp>
-// continue <id>                                           continue
-//parent node:<exp>
-// return <exp>?                                           return
-//parent node:<exp>
-// async <block-or-exp>                                    async expression
-//parent node:<exp>
-// await <block-or-exp>                                    await future (only in async)
-//parent node:<exp>
-// throw <exp>                                             raise an error (only in async)
-//parent node:<exp>
-// try <block-or-exp> catch <pat> <block-or-exp>           catch an error (only in async)
-//parent node:<exp>
-// assert <block-or-exp>                                   assertion
-//parent node:<exp>
-// <exp> : <typ>                                           type annotation
-//parent node:<exp>
-// <dec>                                                   declaration
-//parent node:<exp>
-// ignore <block-or-exp>                                   ignore value
-//parent node:<exp>
-// do <block>                                              block as expression
-//parent node:<exp>
-// do ? <block>                                            option block
-//parent node:<exp>
-// <exp> !                                                 null break
-//parent node:<exp>
-// debug <block-or-exp>                                    debug expression
-
-exp ::=
-    exp_id
-  | exp_lit
-  | exp_unop
-  | exp_binop
-  | exp_tuple
-  | exp_tuple_projection
-  | exp_option_injection
-  | exp_object
-  | exp_variant_injection
-  | exp_object_projection
-  | exp_assignment
-// TODO: isn't this already covered by the binary version?
-//  | exp_unary_update
-  | exp_binary_update
-  | exp_array
-  | exp_array_indexing
-// TODO: is this a lambda/closure? Where is it defined?
-//  | exp_function_expression
-//  | exp_function_call
-  | exp_negation
-  | exp_conjunction
-  | exp_disjunction
-  | exp_conditional
-  | exp_switch
-
-
-//parent node:<exp>
-// <id>                                                    variable
-exp_id ::=
-    ID
-
-//parent node:<exp>
-// <lit>                                                   literal
-exp_lit ::=
-    lit
-
-//parent node:<exp>
-// <unop> <exp>                                            unary operator
-exp_unop ::=
-    unop exp
-
-//parent node:<exp>
-// <exp> <binop> <exp>                                     binary operator
-private exp_binop ::=
-    binop_power_group
-  | binop_shift_group
-  | binop_bitwise_xor_group
-  | binop_bitwise_and_group
-  | binop_bitwise_or_group
-  | binop_multiply_group
-  | binop_add_group
 
 //parent node:<exp>
 // <exp> <relop> <exp>                                     binary relational operator
 private binop_power_group ::=
     exp_exponentiation
-//  | exp_wrapping_exponentiation
+  | exp_wrapping_exponentiation
 
 exp_exponentiation ::=
     exp POW exp
@@ -742,6 +554,102 @@ exp_conditional ::=
 // switch <exp> { (case <pat> <block-or-exp>;)+ }          switch
 exp_switch ::=
     SWITCH L_PAREN exp R_PAREN L_CURL ( CASE pat block_or_exp SEMI )+ R_CURL
+
+//parent node:<exp>
+// while <exp> <block-or-exp>                              while loop
+exp_while ::=
+    WHILE exp block_or_exp
+
+//parent node:<exp>
+// loop <block-or-exp> (while <exp>)?                      loop
+exp_loop ::=
+    LOOP block_or_exp (WHILE exp)?
+
+//parent node:<exp>
+// for ( <pat> in <exp> ) <block-or-exp>                   iteration
+exp_iteration ::=
+    FOR L_PAREN ( pat IN exp ) R_PAREN block_or_exp
+
+//parent node:<exp>
+// label <id> (: <typ>)? <block-or-exp>                    label
+exp_label ::=
+    LABEL ID (COLUMN typ)? block_or_exp
+
+//parent node:<exp>
+// break <id> <exp>?                                       break
+exp_break ::=
+    BREAK ID exp?
+
+//parent node:<exp>
+// continue <id>                                           continue
+exp_continue ::=
+    CONTINUE ID
+
+//parent node:<exp>
+// return <exp>?                                           return
+exp_return ::=
+    RETURN exp?
+
+//parent node:<exp>
+// async <block-or-exp>                                    async expression
+exp_async ::=
+    ASYNC block_or_exp
+
+//parent node:<exp>
+// await <block-or-exp>                                    await future (only in async)
+// TODO: find example for await
+exp_await ::=
+    AWAIT block_or_exp
+
+//parent node:<exp>
+// throw <exp>                                             raise an error (only in async)
+exp_throw ::=
+    THROW exp
+
+//parent node:<exp>
+// try <block-or-exp> catch <pat> <block-or-exp>           catch an error (only in async)
+exp_try_catch ::=
+    TRY block_or_exp CATCH pat block_or_exp
+
+//parent node:<exp>
+// assert <block-or-exp>                                   assertion
+exp_assertion ::=
+    ASSERT block_or_exp
+
+//parent node:<exp>
+// <exp> : <typ>                                           type annotation
+exp_type_annotation ::=
+    exp COLUMN typ
+
+//parent node:<exp>
+// <dec>                                                   declaration
+exp_dec ::=
+    dec
+
+//parent node:<exp>
+// ignore <block-or-exp>                                   ignore value
+exp_ignore ::=
+    IGNORE block_or_exp
+
+//parent node:<exp>
+// do <block>                                              block as expression
+exp_block_as_expression ::=
+    DO block
+
+//parent node:<exp>
+// do ? <block>                                            option block
+exp_option_block ::=
+    DO QUESTION block
+
+//parent node:<exp>
+// <exp> !                                                 null break
+exp_null_break ::=
+    exp EXCLAMATION
+
+//parent node:<exp>
+//  ( <exp> )                                      parentheses
+exp_parentheses ::=
+    L_PAREN exp R_PAREN
 
 //<block-or-exp> ::=
 //  <block>
