@@ -91,7 +91,7 @@ typ_constructor ::=
 //parent: <typ>
 //  <sort>? { <typ-field>;* }                     object
 typ_object ::=
-   sort? L_CURL (typ_field SEMI)* L_CURL   // TODO: add sample
+   sort? L_CURL typ_field? (SEMI typ_field)* R_CURL   // TODO: add sample
 
 //parent: <typ>
 //  { <typ-tag>;* }                               variant
@@ -803,63 +803,71 @@ stab ::=
     FLEXIBLE
   | STABLE
 
-//<pat_plain> ::=
-//    '_'
-//    <id>
-//    <lit>
-//    '(' <list(<pat_bin>, ',')> ')'
-
-pat_plain ::=
-    UNDERSCORE
-  | ID
-  | lit
-  | L_PAREN pat_bin? (COMA pat_bin)* R_PAREN
-
-//<pat_nullary> ::=
-//    <pat_plain>
-//    '{' <list(<pat_field>, ';')> '}'
-
-private pat_nullary ::=
-    pat_plain
-
-//<pat_un> ::=
-//    <pat_nullary>
-//    '#' <id>
-//    '#' <id> <pat_nullary>
-//    '?' <pat_un>
-//    <unop> <lit>
-
-private pat_un ::=
-    pat_nullary
-  | pat_unop
-
-pat_unop ::=
-    PLUS lit
-  | MINUS lit
-  | CARRET lit
-
-//<pat_bin> ::=
-//    <pat_un>
-//    <pat_bin> 'or' <pat_bin>
-//    <pat_bin> ':' <typ>
-
-private pat_bin ::=
-    pat_un
-//  | pat_bin_or
-  | pat_bin_type
-
-pat_bin_type ::=
-    pat ':' typ
-
-//<pat> ::=
-//    <pat_bin>
+//<pat> ::=                                      patterns
 
 pat ::=
-    pat_bin
+    pat_underscore
+  | pat_variable
+  | pat_literal
+  | pat_tuple
+  | pat_object
+  | pat_variant_pattern
+  | pat_option
+  | pat_type_annotation
+  | pat_disjunctive
 
-//<pat_field> ::=
-//    <id> (':' <typ>)?
-//    <id> (':' <typ>)? '=' <pat>
+//parent: <pat>
+//  _                                              wildcard
+pat_underscore ::=
+    UNDERSCORE
+
+//parent: <pat>
+//  <id>                                           variable
+pat_variable ::=
+    ID
+
+//parent: <pat>
+//  <unop>? <lit>                                  literal
+pat_literal ::=
+    unop? lit
+
+//parent: <pat>
+//  ( <pat>,* )                                    tuple or brackets
+pat_tuple ::=
+    L_PAREN pat? (COMA pat)* R_PAREN
+
+//parent: <pat>
+//  { <pat-field>;* }                              object pattern
+pat_object ::=
+    L_CURL pat_field R_CURL
+
+//parent: <pat>
+//  # <id> <pat>?                                  variant pattern
+pat_variant_pattern ::=
+    HASH ID pat?
+
+//parent: <pat>
+//  ? <pat>                                        option
+pat_option ::=
+    QUESTION pat
+
+//parent: <pat>
+//  <pat> : <typ>                                  type annotation
+pat_type_annotation ::=
+    pat COLUMN typ
+
+//parent: <pat>
+//  <pat> or <pat>                                 disjunctive pattern
+pat_disjunctive ::=
+    pat OR pat
+
+//<pat-field> ::=                                object pattern fields
+//  <id> (: <typ>) = <pat>                         field
+//  <id> (: <typ>)                                 punned field
+// TODO: what is thi (: <typ>) syntax again?
+pat_field ::=
+    ID COLUMN typ EQ pat
+  | ID COLUMN
 
 //<dec> ::=                                                                                declaration
 //  <exp>                                                                                  expression
