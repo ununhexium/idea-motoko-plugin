@@ -62,6 +62,8 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
     )
 
     val OPERATION_SIGNS = listOf(
+      MotokoTypes.AMPERSAND,
+      MotokoTypes.CARRET,
       MotokoTypes.COMA,
       MotokoTypes.EQ,
       MotokoTypes.EQEQ,
@@ -70,21 +72,30 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.L_ANGLE,
       MotokoTypes.L_CURL,
       MotokoTypes.L_PAREN,
+      MotokoTypes.L_ROTATE,
+      MotokoTypes.L_SHIFT,
       MotokoTypes.L_SQUARE,
       MotokoTypes.MINUS,
       MotokoTypes.NAT,
       MotokoTypes.NEQ,
       MotokoTypes.PERCENT,
+      MotokoTypes.PIPE,
       MotokoTypes.PLUS,
-      MotokoTypes.POWER,
+      MotokoTypes.POW,
       MotokoTypes.R_ANGLE,
       MotokoTypes.R_CURL,
       MotokoTypes.R_PAREN,
+      MotokoTypes.R_ROTATE,
+      MotokoTypes.R_SHIFT,
       MotokoTypes.R_SQUARE,
       MotokoTypes.SEMI,
       MotokoTypes.SLASH,
       MotokoTypes.STAR,
       MotokoTypes.UNDERSCORE,
+      MotokoTypes.WRAPPING_ADD,
+      MotokoTypes.WRAPPING_MUL,
+      MotokoTypes.WRAPPING_SUB,
+      MotokoTypes.WRAPPING_POW,
     )
 
     val TEXTS = listOf(

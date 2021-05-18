@@ -60,6 +60,7 @@ FLOAT= ({NUM} {POINT} {NUM}?)
 SIGN=({PLUS} | {MINUS})
 
 ACTOR="actor"
+AMPERSAND="&"
 AND="and"
 ASSERT="assert"
 AWAIT="await"
@@ -89,6 +90,8 @@ IMPORT="import"
 L_ANGLE="<"
 L_CURL="{"
 L_PAREN="("
+L_ROTATE="<<>"
+L_SHIFT="<<"
 L_SQUARE="["
 LABEL="label"
 LET="let"
@@ -102,15 +105,18 @@ NULL="null"
 OBJECT="object"
 OR="or"
 PERCENT="%"
+PIPE="|"
 PLUS="+"
 POINT="."
-POWER="**"
+POW="**"
 PRIVATE="private"
 PUBLIC="public"
 QUERY="query"
 R_ANGLE=">"
 R_CURL="}"
 R_PAREN=")"
+R_ROTATE="<>>"
+R_SHIFT=">>"
 R_SQUARE="]"
 RETURN="return"
 SEMI=";"
@@ -126,6 +132,10 @@ TYPE="type"
 UNDERSCORE="_"
 VAR="var"
 WHILE="while"
+WRAPPING_ADD="+%"
+WRAPPING_SUB="-%"
+WRAPPING_MUL="*%"
+WRAPPING_POW="**%"
 
 %state WAITING_VALUE
 
@@ -175,8 +185,20 @@ WHILE="while"
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
     // symbols
-    {POWER}                   { yybegin(YYINITIAL); return MotokoTypes.POWER; }
+    {WRAPPING_ADD}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_ADD; }
+    {WRAPPING_MUL}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_MUL; }
+    {WRAPPING_POW}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_POW; }
+    {WRAPPING_SUB}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_SUB; }
 
+    {L_ROTATE}                { yybegin(YYINITIAL); return MotokoTypes.L_ROTATE; }
+    {R_ROTATE}                { yybegin(YYINITIAL); return MotokoTypes.R_ROTATE; }
+
+    {L_SHIFT}                 { yybegin(YYINITIAL); return MotokoTypes.L_SHIFT; }
+    {R_SHIFT}                 { yybegin(YYINITIAL); return MotokoTypes.R_SHIFT; }
+
+    {POW}                     { yybegin(YYINITIAL); return MotokoTypes.POW; }
+
+    {AMPERSAND}               { yybegin(YYINITIAL); return MotokoTypes.AMPERSAND; }
     {CARRET}                  { yybegin(YYINITIAL); return MotokoTypes.CARRET; }
     {COLUMN}                  { yybegin(YYINITIAL); return MotokoTypes.COLUMN; }
     {COMA}                    { yybegin(YYINITIAL); return MotokoTypes.COMA; }
@@ -187,6 +209,7 @@ WHILE="while"
     {L_SQUARE}                { yybegin(YYINITIAL); return MotokoTypes.L_SQUARE; }
     {MINUS}                   { yybegin(YYINITIAL); return MotokoTypes.MINUS; }
     {PERCENT}                 { yybegin(YYINITIAL); return MotokoTypes.PERCENT; }
+    {PIPE}                    { yybegin(YYINITIAL); return MotokoTypes.PIPE; }
     {PLUS}                    { yybegin(YYINITIAL); return MotokoTypes.PLUS; }
     {POINT}                   { yybegin(YYINITIAL); return MotokoTypes.POINT; }
     {R_ANGLE}                 { yybegin(YYINITIAL); return MotokoTypes.R_ANGLE; }

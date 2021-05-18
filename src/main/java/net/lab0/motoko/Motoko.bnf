@@ -333,52 +333,99 @@ private exp_un ::=
 
 private exp_bin ::=
     exp_un
-  | power_group
-  | multiply_group
-  | add_group
+  | binop_group
   | relational_group
 
-private add_group ::=
-    exp_plus
-  | exp_minus
+private binop_group ::=
+    power_group
+  | shift_group
+  | bitwise_xor_group
+  | bitwise_and_group
+  | bitwise_or_group
+  | multiply_group
+  | add_group
 
-exp_minus ::= exp MINUS exp
-exp_plus ::= exp PLUS exp
+private power_group ::=
+    exp_exponentiation
+  | exp_wrapping_exponentiation
+
+exp_exponentiation ::=
+    exp POW exp
+
+exp_wrapping_exponentiation ::=
+    exp WRAPPING_POW exp
+
+private shift_group ::=
+    exp_left_shift
+  | exp_right_shift
+  | exp_left_rotate
+  | exp_right_rotate
+
+exp_left_shift ::=
+    exp L_SHIFT exp
+
+exp_right_shift ::=
+    exp R_SHIFT exp
+
+exp_left_rotate::=
+    exp L_ROTATE exp
+
+exp_right_rotate::=
+    exp R_ROTATE exp
+
+private bitwise_xor_group::=
+    exp_xor
+
+exp_xor ::=
+    exp CARRET exp
+
+private bitwise_and_group::=
+    exp_bitwise_and
+
+exp_bitwise_and ::=
+    exp AMPERSAND exp
+
+private bitwise_or_group ::=
+    exp_bitwise_or
+
+exp_bitwise_or ::=
+    exp PIPE exp
 
 private multiply_group ::=
     exp_multiply
   | exp_divide
   | exp_modulo
+  | exp_wrapping_multiply
 
-exp_multiply ::= exp STAR exp
-exp_divide ::= exp SLASH exp
-exp_modulo ::= exp PERCENT exp
+exp_multiply ::=
+    exp STAR exp
 
-private power_group ::=
-    exp_exponentiation
+exp_divide ::=
+    exp SLASH exp
 
-exp_exponentiation ::=
-    exp POWER exp
+exp_modulo ::=
+    exp PERCENT exp
 
-//<binop> ::=
-//    '+'
-//    '-'
-//    '*'
-//    '/'
-//    '%'
-//    '**'
-//    '+%'
-//    '-%'
-//    '*%'
-//    '**%'
-//    '&'
-//    '|'
-//    '^'
-//    '<<'
-//    ' >>'
-//    '<<>'
-//    '<>>'
-//    '#'
+exp_wrapping_multiply ::=
+    exp WRAPPING_MUL exp
+
+private add_group ::=
+    exp_plus
+  | exp_minus
+  | exp_wrapping_plus
+  | exp_wrapping_minus
+
+exp_minus ::=
+    exp MINUS exp
+
+exp_plus ::=
+    exp PLUS exp
+
+exp_wrapping_minus ::=
+    exp WRAPPING_ADD exp
+
+exp_wrapping_plus ::=
+    exp WRAPPING_SUB exp
 
 //<exp_nondec> ::=
 //    <exp_bin>
