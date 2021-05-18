@@ -32,6 +32,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
 
     val KEYWORDS = listOf(
       MotokoTypes.ACTOR,
+      MotokoTypes.CASE,
       MotokoTypes.CLASS,
       MotokoTypes.ELSE,
       MotokoTypes.FALSE,
@@ -50,6 +51,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.QUERY,
       MotokoTypes.SHARED,
       MotokoTypes.STABLE,
+      MotokoTypes.SWITCH,
       MotokoTypes.SYSTEM,
       MotokoTypes.TRUE,
       MotokoTypes.TYPE,
@@ -100,6 +102,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
       MotokoTypes.MINUS,
       MotokoTypes.NAT,
       MotokoTypes.NEQ,
+      MotokoTypes.NOT,
       MotokoTypes.OR,
       MotokoTypes.PERCENT,
       MotokoTypes.PIPE,

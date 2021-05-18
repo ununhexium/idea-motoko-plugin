@@ -400,22 +400,6 @@ private exp_nonvar ::=
 //
 
 //parent node:<exp>
-// <exp> [ <exp> ]                                         array indexing
-//parent node:<exp>
-// <shared-pat>? func <func_exp>                           function expression
-//parent node:<exp>
-// <exp> <typ-args>? <exp>                                 function call
-//parent node:<exp>
-// not <exp>                                               negation
-//parent node:<exp>
-// <exp> and <exp>                                         conjunction
-//parent node:<exp>
-// <exp> or <exp>                                          disjunction
-//parent node:<exp>
-// if <exp> <block-or-exp> (else <block-or-exp>)?          conditional
-//parent node:<exp>
-// switch <exp> { (case <pat> <block-or-exp>;)+ }          switch
-//parent node:<exp>
 // while <exp> <block-or-exp>                              while loop
 //parent node:<exp>
 // loop <block-or-exp> (while <exp>)?                      loop
@@ -453,10 +437,6 @@ private exp_nonvar ::=
 // <exp> !                                                 null break
 //parent node:<exp>
 // debug <block-or-exp>                                    debug expression
-//parent node:<exp>
-// actor <exp>                                             actor reference
-//parent node:<exp>
-// ( <exp> )                                               parentheses
 
 exp ::=
     exp_id
@@ -470,10 +450,20 @@ exp ::=
   | exp_variant_injection
   | exp_object_projection
   | exp_assignment
+// TODO: isn't this already covered by the binary version?
 //  | exp_unary_update
   | exp_binary_update
   | exp_array
-  | last
+  | exp_array_indexing
+// TODO: is this a lambda/closure? Where is it defined?
+//  | exp_function_expression
+//  | exp_function_call
+  | exp_negation
+  | exp_conjunction
+  | exp_disjunction
+  | exp_conditional
+  | exp_switch
+
 
 //parent node:<exp>
 // <id>                                                    variable
@@ -626,7 +616,6 @@ exp_assignment::=
 
 //parent node:<exp>
 // <unop>= <exp>                                           unary update
-// TODO: isn't this already covered by the binary version?
 
 //parent node:<exp>
 // <exp> <binop>= <exp>                                    binary update
@@ -714,7 +703,52 @@ exp_binassign_in_place_concatenation ::=
 exp_array ::=
     L_SQUARE VAR? exp? (COMA exp)* R_SQUARE
 
-private last ::= exp //TODO: remove this placeholder
+//parent node:<exp>
+// <exp> [ <exp> ]                                         array indexing
+exp_array_indexing ::=
+    exp L_SQUARE exp R_SQUARE
+
+//parent node:<exp>
+// <shared-pat>? func <func_exp>                           function expression
+//exp_function_expression ::=
+//    shared_pat? FUNC func_exp
+
+//parent node:<exp>
+// <exp> <typ-args>? <exp>                                 function call
+//exp_function_call ::=
+//    exp typ_args? exp
+
+//parent node:<exp>
+// not <exp>                                               negation
+exp_negation ::=
+    NOT exp
+
+//parent node:<exp>
+// <exp> and <exp>                                         conjunction
+exp_conjunction ::=
+    exp AND exp
+
+//parent node:<exp>
+// <exp> or <exp>                                          disjunction
+exp_disjunction ::=
+    exp OR exp
+
+//parent node:<exp>
+// if <exp> <block-or-exp> (else <block-or-exp>)?          conditional
+exp_conditional ::=
+    IF exp block_or_exp (ELSE block_or_exp)?
+
+//parent node:<exp>
+// switch <exp> { (case <pat> <block-or-exp>;)+ }          switch
+exp_switch ::=
+    SWITCH L_PAREN exp R_PAREN L_CURL ( CASE pat block_or_exp SEMI )+ R_CURL
+
+//<block-or-exp> ::=
+//  <block>
+//  <exp>
+block_or_exp ::=
+    block
+  | exp
 
 //<exp-field> ::=                      object expression fields
 //  var? <id> (: <typ>) = <exp>        field

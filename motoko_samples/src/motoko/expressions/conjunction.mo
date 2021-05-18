@@ -1,0 +1,1 @@
+let both = a and b;

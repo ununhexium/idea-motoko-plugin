@@ -181,6 +181,7 @@ WRAPPING_POW="**%"
     // keywords
     {ACTOR}                   { yybegin(YYINITIAL); return MotokoTypes.ACTOR; }
     {BANG}                    { yybegin(YYINITIAL); return MotokoTypes.BANG; }
+    {CASE}                    { yybegin(YYINITIAL); return MotokoTypes.CASE; }
     {CLASS}                   { yybegin(YYINITIAL); return MotokoTypes.CLASS; }
     {ELSE}                    { yybegin(YYINITIAL); return MotokoTypes.ELSE; }
     {FALSE}                   { yybegin(YYINITIAL); return MotokoTypes.FALSE; }
@@ -191,12 +192,14 @@ WRAPPING_POW="**%"
     {IN}                      { yybegin(YYINITIAL); return MotokoTypes.IN; }
     {IMPORT}                  { yybegin(YYINITIAL); return MotokoTypes.IMPORT; }
     {LET}                     { yybegin(YYINITIAL); return MotokoTypes.LET; }
-    {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
     {MODULE}                  { yybegin(YYINITIAL); return MotokoTypes.MODULE; }
+    {NULL}                    { yybegin(YYINITIAL); return MotokoTypes.NULL; }
+    {NOT}                     { yybegin(YYINITIAL); return MotokoTypes.NOT; }
     {OBJECT}                  { yybegin(YYINITIAL); return MotokoTypes.OBJECT; }
     {PRIVATE}                 { yybegin(YYINITIAL); return MotokoTypes.PRIVATE; }
     {PUBLIC}                  { yybegin(YYINITIAL); return MotokoTypes.PUBLIC; }
     {SHARED}                  { yybegin(YYINITIAL); return MotokoTypes.SHARED; }
+    {SWITCH}                  { yybegin(YYINITIAL); return MotokoTypes.SWITCH; }
     {SYSTEM}                  { yybegin(YYINITIAL); return MotokoTypes.SYSTEM; }
     {TRUE}                    { yybegin(YYINITIAL); return MotokoTypes.TRUE; }
     {TYPE}                    { yybegin(YYINITIAL); return MotokoTypes.TYPE; }
