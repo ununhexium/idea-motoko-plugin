@@ -35,7 +35,7 @@ TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
 // Digit  ::= 0..9
 LETTER=[a-zA-Z]
 DIGIT=[0-9]
-ID={LETTER} ({LETTER}|{DIGIT})*
+ID={LETTER} ({LETTER}|{DIGIT}|{UNDERSCORE})*
 
 //hexdigit ::= ['0'-'9''a'-'f''A'-'F']
 HEXDIGIT=[[0-9]||[a-f]||[A-F]]
