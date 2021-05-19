@@ -26,31 +26,23 @@ sort ::=
   | MODULE
   | OBJECT
 
-//<func_sort_opt> ::=
-//    <empty>
-//    'shared' 'query'?
-//    'query'
-
 //<shared_pat_opt> ::=
 //    <empty>
 //    'shared' 'query'? <pat_plain>?
 //    'query' <pat_plain>?
-
 shared_pat ::=
     SHARED QUERY? pat?
-// TODO: hacky not in the spec but necessary for example linkedup code
+// TODO: hacky! not in the spec but necessary for example linkedup code
   | QUERY pat?
 
 //<typ-params> ::=          type parameters
 //  < typ-param,* >
-
 typ_params ::=
     L_ANGLE (typ_param (COMA typ_param)*)? R_ANGLE
 
 //<typ-param>
 //  <id> <: <typ>           constrained type parameter
 //  <id>                    unconstrained type parameter
-
 typ_param ::=
     ID TYPE_CONSTRAINT typ
   | ID
@@ -161,7 +153,6 @@ typ_tuple_single ::=
 //<path> ::=                                   paths
 //  <id>                                         type identifier
 //  <path> . <id>                                projection
-
 path ::=
     path_id
   | path_projection
@@ -201,7 +192,6 @@ typ_args ::=
 //    <float>
 //    <char>
 //    <text>
-
 lit ::=
     NULL
   | bool
@@ -218,7 +208,6 @@ bool ::=
 //    '+'
 //    '-'
 //    '^'
-
 unop ::=
     PLUS
   | MINUS
@@ -286,8 +275,7 @@ exp ::=
   | exp_update
   | exp_array
   | exp_array_indexing
-// TODO: is this a lambda/closure? Where is it defined? Examples?
-//  | exp_function_expression
+  | exp_function_expression
   | exp_function_call
   | exp_negation
   | exp_conjunction
@@ -495,6 +483,7 @@ exp_assignment::=
 
 //parent node:<exp>
 // <unop>= <exp>                                           unary update
+// not needed, overlaps with binop
 
 //parent node:<exp>
 // <exp> <binop>= <exp>                                    binary update
@@ -589,8 +578,8 @@ exp_array_indexing ::=
 
 //parent node:<exp>
 // <shared-pat>? func <func_exp>                           function expression
-//exp_function_expression ::=
-//    shared_pat? FUNC func_exp
+exp_function_expression ::=
+    shared_pat? FUNC "func_exp"  // TODO: what should this contain?
 
 //parent node:<exp>
 // <exp> <typ-args>? <exp>                                 function call
@@ -739,25 +728,11 @@ exp_field ::=
 
 //<block> ::=
 //    '{' <list(<dec>, ';')> '}'
-
 block ::=
-    L_CURL dec? (SEMI dec)* SEMI? R_CURL
-
-//<case> ::=
-//    'case' <pat_nullary> <exp_nest>
-
-//<catch> ::=
-//    'catch' <pat_nullary> <exp_nest>
-
-//<exp_field> ::=
-//    'var'? <id> (':' <typ>)?
-//    'var'? <id> (':' <typ>)? '=' <exp>
-
-
+    L_CURL SEMI* (dec (SEMI+ dec)*)? SEMI* R_CURL
 
 //<dec-field> ::=              object declaration fields
 //  <vis>? <stab>? <dec>       field
-
 dec_field ::=
     vis? stab? dec
 
@@ -913,6 +888,13 @@ imp ::= IMPORT ID? EQ? url
 
 url ::=
     TEXT
+
+//<lib> ::=                                                                                       library
+//    <imp>;* module <id>? <obj-body>                                                               module
+//    <imp>;* <shared-pat>? actor class <id> <typ-params>? <pat> (: <typ>)? <class-body>            actor class
+lib ::=
+    imports MODULE ID? obj_body
+  | imports shared_pat? ACTOR CLASS ID typ_params? pat (COLUMN typ)? class_body
 
 imports ::= SEMI* (imp (SEMI+ imp)*)? SEMI*
 declarations ::= SEMI* (DOC_COMMENT? dec (SEMI+ DOC_COMMENT? dec)*)? SEMI*
