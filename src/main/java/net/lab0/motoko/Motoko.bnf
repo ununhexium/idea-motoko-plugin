@@ -624,7 +624,7 @@ exp_conditional ::=
 //parent node:<exp>
 // switch <exp> { (case <pat> <block-or-exp>;)+ }          switch
 exp_switch ::=
-    SWITCH L_PAREN exp R_PAREN L_CURL ( CASE pat block_or_exp SEMI )+ R_CURL
+    SWITCH exp L_CURL ( CASE pat block_or_exp SEMI )+ R_CURL
 
 //parent node:<exp>
 // while <exp> <block-or-exp>                              while loop
