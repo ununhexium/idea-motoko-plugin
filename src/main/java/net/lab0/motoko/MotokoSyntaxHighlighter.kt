@@ -28,6 +28,7 @@ class MotokoSyntaxHighlighter : SyntaxHighlighterBase() {
     val COMMENTS = listOf(
       MotokoTypes.LINE_COMMENT,
       MotokoTypes.BLOCK_COMMENT,
+      MotokoTypes.DOC_COMMENT,
     )
 
     val KEYWORDS = listOf(

@@ -37,7 +37,7 @@ public class MotokoParserDefinition implements ParserDefinition {
   @NotNull
   @Override
   public TokenSet getCommentTokens() {
-    return TokenSet.create(MotokoTypes.LINE_COMMENT, MotokoTypes.BLOCK_COMMENT);
+    return TokenSet.create(MotokoTypes.LINE_COMMENT, MotokoTypes.BLOCK_COMMENT, MotokoTypes.DOC_COMMENT);
   }
 
   @NotNull

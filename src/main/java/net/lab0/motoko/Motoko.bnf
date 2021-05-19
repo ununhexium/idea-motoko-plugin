@@ -915,10 +915,10 @@ url ::=
     TEXT
 
 imports ::= SEMI* (imp (SEMI+ imp)*)? SEMI*
-declarations ::= SEMI* (dec (SEMI+ dec)*)? SEMI*
+declarations ::= SEMI* (DOC_COMMENT? dec (SEMI+ DOC_COMMENT? dec)*)? SEMI*
 comments ::= (LINE_COMMENT | BLOCK_COMMENT)*
 
 //<prog> ::=
 //    <list(<imp>, ';')> <list(<dec>, ';')>
 
-prog::= imports declarations comments BLOCK_COMMENT*
+prog::= imports declarations comments

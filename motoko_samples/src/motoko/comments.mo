@@ -16,3 +16,6 @@ level2
 */
 */
 */
+
+/// doc comment
+/// @deprecated

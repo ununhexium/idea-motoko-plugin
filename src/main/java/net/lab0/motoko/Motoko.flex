@@ -38,14 +38,59 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 // TODO: doc comments
 LINE_COMMENT="//"[^\r\n]*
+DOC_COMMENT="/// "[^\r\n]*
 BLOCK_COMMENT_START="/*"
 BLOCK_COMMENT_END="*/"
 
-// Hacky
-// TODO: Implement the actual definition from https://sdk.dfinity.org/docs/language-guide/language-manual.html#syntax-chars
-CHAR="'" [:letter:] "'" | "'" \\ "'" "'"
+//ascii ::= ['\x00'-'\x7f']
+ASCII=[\x00-\x7f]
 
-TEXT=\"([^\\\"\r\n]|\\[^\r\n])*\"?
+//ascii_no_nl ::= ['\x00'-'\x09''\x0b'-'\x7f']
+ASCII_NO_NL=[[\x00-\x7f] -- \n ]
+
+//utf8cont ::= ['\x80'-'\xbf']
+UTF8CONT=[\x80-\xbf]
+
+//utf8enc ::=
+//    ['\xc2'-'\xdf'] utf8cont
+//  | ['\xe0'] ['\xa0'-'\xbf'] utf8cont
+//  | ['\xed'] ['\x80'-'\x9f'] utf8cont
+//  | ['\xe1'-'\xec''\xee'-'\xef'] utf8cont utf8cont
+//  | ['\xf0'] ['\x90'-'\xbf'] utf8cont utf8cont
+//  | ['\xf4'] ['\x80'-'\x8f'] utf8cont utf8cont
+//  | ['\xf1'-'\xf3'] utf8cont utf8cont utf8cont
+UTF8ENC=  [\xc2-\xdf] {UTF8CONT}
+    | [\xe0] [\xa0-\xbf] {UTF8CONT}
+    | [\xed] [\x80-\x9f] {UTF8CONT}
+    | [\xe1-\xec\xee-\xef] {UTF8CONT} {UTF8CONT}
+    | [\xf0] [\x90-\xbf] {UTF8CONT} {UTF8CONT}
+    | [\xf4] [\x80-\x8f] {UTF8CONT} {UTF8CONT}
+    | [\xf1-\xf3] {UTF8CONT} {UTF8CONT} {UTF8CONT}
+
+//utf8 ::= ascii | utf8enc
+UTF8={ASCII} | {UTF8ENC}
+
+//escape ::= ['n''r''t''\\''\'''\"']
+ESCAPE=["n" "r" "t" "'" \" \\]
+
+//character ::=
+//  | [^'"''\\''\x00'-'\x1f''\x7f'-'\xff']
+//  | utf8enc
+//  | '\\'escape
+//  | '\\'hexdigit hexdigit
+//  | "\\u{" hexnum '}'
+
+CHARACTER=
+    [\x20 \x21 \x23-\x5b \x5d-\x7e]
+  | {UTF8ENC}
+  | \\{ESCAPE}
+  | \\{HEXDIGIT} {HEXDIGIT}
+  | \\"u{" {HEXNUM} "}"
+
+//char := '\'' character '\''
+CHAR="'" {CHARACTER} "'"
+
+TEXT=\" ({CHARACTER})* \"
 
 // <id>   ::= Letter (Letter | Digit | _)*
 // Letter ::= A..Z | a..z
@@ -57,7 +102,7 @@ ID={LETTER} ({LETTER}|{DIGIT}|{UNDERSCORE})*
 //hexdigit ::= ['0'-'9''a'-'f''A'-'F']
 HEXDIGIT=[[0-9]||[a-f]||[A-F]]
 //num ::= digit ('_'? digit)*
-NUM={DIGIT} ({UNDERSCORE}* {DIGIT})*
+NUM={DIGIT} ({UNDERSCORE}? {DIGIT})*
 //hexnum ::= hexdigit ('_'? hexdigit)*
 HEXNUM={HEXDIGIT} ({UNDERSCORE}? {HEXDIGIT})*
 //nat ::= num | "0x" hexnum
@@ -183,34 +228,39 @@ WRAPPING_POW="**%"
 WRAPPING_SUB="-%"
 
 %state WAITING_VALUE
-%xstate IN_COMMENT
+%xstate IN_BLOCK_COMMENT
+%state IN_DOC_COMMENT
 
 %%
 
 // https://stackoverflow.com/questions/24666688/jflex-match-nested-comments-as-one-token
-"/*"                           { yypushstate(IN_COMMENT); return MotokoTypes.BLOCK_COMMENT; }
+"/*"                           { yypushstate(IN_BLOCK_COMMENT); return MotokoTypes.BLOCK_COMMENT; }
 
-<IN_COMMENT> {
-  {BLOCK_COMMENT_START}        { yypushstate(IN_COMMENT); return MotokoTypes.BLOCK_COMMENT; }
+<IN_BLOCK_COMMENT> {
+  {BLOCK_COMMENT_START}        { yypushstate(IN_BLOCK_COMMENT); return MotokoTypes.BLOCK_COMMENT; }
   [^\*\\/]*                    { return MotokoTypes.BLOCK_COMMENT; }
   {BLOCK_COMMENT_END}          { yypopstate(); return MotokoTypes.BLOCK_COMMENT; }
   [\*\\/]                      { return MotokoTypes.BLOCK_COMMENT; }
   .                            { return MotokoTypes.BAD_CHARACTER; }
 }
+//
+//<IN_DOC_COMMENT> {
+//  "@deprecated"                { yybegin(YYINITIAL); return MotokoTypes.DEPRECATED; }
+//}
 
 <WAITING_VALUE> {
     {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
     {WHITE_SPACE}+                                { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 }
 
-
 <YYINITIAL> {
     // comments
+    {DOC_COMMENT}             { yybegin(YYINITIAL); return MotokoTypes.DOC_COMMENT; }
     {LINE_COMMENT}            { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
 
     // literals
-    {CHAR}                    { yybegin(YYINITIAL); return MotokoTypes.CHAR; }
     {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
+    {CHAR}                    { yybegin(YYINITIAL); return MotokoTypes.CHAR; }
     {FLOAT}                   { yybegin(YYINITIAL); return MotokoTypes.FLOAT; }
     {NAT}                     { yybegin(YYINITIAL); return MotokoTypes.NAT; }
 

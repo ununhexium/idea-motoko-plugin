@@ -1,12 +1,3 @@
-let n = null;
-
-let t = true;
-let f = false;
-
-let one = 1;
-let withUnderscores = 123_456_789;
-let hexadecimal = 0x123_456_789_abc_def;
-let japanese = 1234_5678;
 
 let f1 = 1.0;
 let f2 = 0.123_456;
@@ -27,9 +18,3 @@ let h6 = 0xap-123;
 let h7 = 0xaP123_456;
 let h8 = 0xa.123p123_456;
 let h9 = 0xa.123_456P-123_456;
-
-let c0 = 'a';
-let c1 = '\'';
-// TODO: continue with the full spec
-
-let loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscine elit.";
