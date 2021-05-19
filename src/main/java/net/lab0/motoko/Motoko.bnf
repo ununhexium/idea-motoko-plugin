@@ -21,23 +21,10 @@
 
 motokoFile ::= prog
 
-//<list(X, SEP)> ::=
-//    <empty>
-//    X
-//    X SEP <list(X, SEP)>
-
-//meta list ::= <empty> | <<X>> | <<X>> <<SEP>> <<list <<X>> <<SEP>> >>
-
-//<list1(X, SEP)> ::=
-//    X
-//    X SEP <list(X, SEP)>
-
-// <sort> ::= (actor | module | object)
-
 sort ::=
-    OBJECT
-  | ACTOR
+    ACTOR
   | MODULE
+  | OBJECT
 
 //<func_sort_opt> ::=
 //    <empty>
@@ -51,12 +38,14 @@ sort ::=
 
 shared_pat ::=
     SHARED QUERY? pat?
+// TODO: hacky not in the spec but necessary for example linkedup code
+  | QUERY pat?
 
 //<typ-params> ::=          type parameters
 //  < typ-param,* >
 
 typ_params ::=
-    L_ANGLE typ_param (COMA typ_param)* R_ANGLE
+    L_ANGLE (typ_param (COMA typ_param)*)? R_ANGLE
 
 //<typ-param>
 //  <id> <: <typ>           constrained type parameter
@@ -91,12 +80,12 @@ typ_constructor ::=
 //parent: <typ>
 //  <sort>? { <typ-field>;* }                     object
 typ_object ::=
-   sort? L_CURL typ_field? (SEMI typ_field)* R_CURL   // TODO: add sample
+   sort? L_CURL SEMI* (typ_field (SEMI+ typ_field)*)? SEMI* R_CURL
 
 //parent: <typ>
 //  { <typ-tag>;* }                               variant
 typ_variant ::=
-    L_CURL (typ_tag SEMI)* R_CURL           // TODO: add sample
+    L_CURL SEMI* (typ_tag (SEMI+ typ_tag)*)? SEMI* R_CURL
 
 //parent: <typ>
 //  { # }                                         empty variant
@@ -138,13 +127,13 @@ shared_prefix ::=
 
 //parent: <typ>
 //  async <typ>                                   future
- typ_future ::=
+typ_future ::=
     ASYNC typ
 
 //parent: <typ>
 //  ( ((<id> :)? <typ>),* )                       tuple
- typ_tuple ::=
-    L_PAREN typ_tuple_single (COMA typ_tuple_single)* R_PAREN
+typ_tuple ::=
+    L_PAREN (typ_tuple_single (COMA typ_tuple_single)*)? R_PAREN
 
 typ_tuple_single ::=
     (ID COLUMN)? typ
@@ -168,9 +157,6 @@ typ_tuple_single ::=
 //  ( type )                                      parenthesized type
  typ_parenthesised ::=
     L_PAREN typ R_PAREN
-
-
-//  | L_CURL  R_CURL
 
 //<path> ::=                                   paths
 //  <id>                                         type identifier
@@ -206,18 +192,7 @@ typ_tag ::=
 //<typ-args> ::=                                type arguments
 //  < <typ>,* >
 typ_args ::=
-    L_ANGLE typ? (COMA typ)* R_ANGLE
-
-//<typ_field> ::=
-//    'var'? <id> ':' <typ>
-//    <id> ('<' <list(<typ_bind>, ',')> '>')? <typ_nullary> ':' <typ>
-
-//<typ_tag> ::=
-//    '#' <id> (':' <typ>)?
-
-//<typ_bind> ::=
-//    <id> '<:' <typ>
-//    <id>
+    L_ANGLE (typ (COMA typ)*)? R_ANGLE
 
 //<lit> ::=
 //    'null'
@@ -235,7 +210,9 @@ lit ::=
   | CHAR
   | TEXT
 
-bool ::= TRUE | FALSE
+bool ::=
+    TRUE
+  | FALSE
 
 //<unop> ::=
 //    '+'
@@ -247,35 +224,51 @@ unop ::=
   | MINUS
   | CARRET
 
-//<binop> ::=
-//    '+'
-//    '-'
-//    '*'
-//    '/'
-//    '%'
-//    '**'
-//    '+%'
-//    '-%'
-//    '*%'
-//    '**%'
-//    '&'
-//    '|'
-//    '^'
-//    '<<'
-//    ' >>'
-//    '<<>'
-//    '<>>'
-//    '#'
-
-//<relop> ::=
-//    '=='
-//    '!='
-//    ' < '
-//    '<='
-//    ' > '
-//    '>='
-
-//<exp> ::=                                                 expressions
+//<exp> ::=                       expressions
+//  <id>                                           variable
+//  <lit>                                          literal
+//  <unop> <exp>                                   unary operator
+//  <exp> <binop> <exp>                            binary operator
+//  <exp> <relop> <exp>                            binary relational operator
+//  ( <exp>,* )                                    tuple
+//  <exp> . <nat>                                  tuple projection
+//  ? <exp>                                        option injection
+//  { <exp-field>;* }                              object
+//  # id <exp>?                                    variant injection
+//  <exp> . <id>                                   object projection/member access
+//  <exp> := <exp>                                 assignment
+//  <unop>= <exp>                                  unary update
+//  <exp> <binop>= <exp>                           binary update
+//  [ var? <exp>,* ]                               array
+//  <exp> [ <exp> ]                                array indexing
+//  <shared-pat>? func <func_exp>                  function expression
+//  <exp> <typ-args>? <exp>                        function call
+//  not <exp>                                      negation
+//  <exp> and <exp>                                conjunction
+//  <exp> or <exp>                                 disjunction
+//  if <exp> <block-or-exp> (else <block-or-exp>)? conditional
+//  switch <exp> { (case <pat> <block-or-exp>;)+ } switch
+//  while <exp> <block-or-exp>                     while loop
+//  loop <block-or-exp> (while <exp>)?             loop
+//  for ( <pat> in <exp> ) <block-or-exp>          iteration
+//  label <id> (: <typ>)? <block-or-exp>           label
+//  break <id> <exp>?                              break
+//  continue <id>                                  continue
+//  return <exp>?                                  return
+//  async <block-or-exp>                           async expression
+//  await <block-or-exp>                           await future (only in async)
+//  throw <exp>                                    raise an error (only in async)
+//  try <block-or-exp> catch <pat> <block-or-exp>  catch an error (only in async)
+//  assert <block-or-exp>                          assertion
+//  <exp> : <typ>                                  type annotation
+//  <dec>                                          declaration
+//  ignore <block-or-exp>                          ignore value
+//  do <block>                                     block as expression
+//  do ? <block>                                   option block
+//  <exp> !                                        null break
+//  debug <block-or-exp>                           debug expression
+//  actor <exp>                                    actor reference
+//  ( <exp> )                                      parentheses
 // the original grammar entries have been split over the grammar nodes below
 exp ::=
     exp_id
@@ -290,12 +283,10 @@ exp ::=
   | exp_variant_injection
   | exp_object_projection
   | exp_assignment
-// TODO: isn't this already covered by the binary version?
-//  | exp_unary_update
-  | exp_binary_update
+  | exp_update
   | exp_array
   | exp_array_indexing
-// TODO: is this a lambda/closure? Where is it defined?
+// TODO: is this a lambda/closure? Where is it defined? Examples?
 //  | exp_function_expression
   | exp_function_call
   | exp_negation
@@ -316,7 +307,7 @@ exp ::=
   | exp_try_catch
   | exp_assertion
   | exp_type_annotation
-// TODO disabled because of left-recursion. Is this necessary?
+// TODO disabled because of left-recursion. Is this necessary? Examples?
 //  | exp_dec
   | exp_ignore
   | exp_block_as_expression
@@ -378,16 +369,6 @@ exp_gt ::=
 
 exp_gte ::=
     exp GTE exp
-
-exp_and ::=
-    exp AND exp
-
-exp_or ::=
-    exp OR exp
-
-exp_column ::=
-    exp COLUMN typ
-
 
 //parent node:<exp>
 // <exp> <relop> <exp>                                     binary relational operator
@@ -517,7 +498,7 @@ exp_assignment::=
 
 //parent node:<exp>
 // <exp> <binop>= <exp>                                    binary update
-private exp_binary_update ::=
+private exp_update ::=
     exp_binassign_in_place_update
   | exp_binassign_in_place_add
   | exp_binassign_in_place_subtract
@@ -712,7 +693,7 @@ exp_type_annotation ::=
     exp COLUMN typ
 
 //parent node:<exp>
-// <dec>                                                   declaration
+//  <dec>                                          declaration
 exp_dec ::=
     dec
 
@@ -756,14 +737,6 @@ exp_field ::=
     VAR? ID (COLUMN typ)? EQ exp
   | VAR? ID (COLUMN typ)?
 
-//<exp_nest> ::=
-//    <block>
-//    <exp>
-
-exp_nest ::=
-    block
-  | exp
-
 //<block> ::=
 //    '{' <list(<dec>, ';')> '}'
 
@@ -803,8 +776,8 @@ vis ::=
 //  flexible
 
 stab ::=
-    FLEXIBLE
-  | STABLE
+    STABLE
+  | FLEXIBLE
 
 //<pat> ::=                                      patterns
 
@@ -882,13 +855,34 @@ pat_field ::=
 //  <shared-pat>? <sort>? class <id>? <typ-params>? <pat> (: <typ>)? <class-body>          class
 
 dec ::=
+    dec_exp
+  | dec_immutable
+  | dec_mutable
+  | dec_object
+  | dec_function
+  | dec_type
+  | dec_class
+
+dec_exp ::=
     exp
-  | LET pat EQ exp
-  | VAR ID (COLUMN typ)? EQ exp
-  | sort ID? EQ? obj_body
-  | shared_pat? FUNC ID? typ_params? pat (COLUMN typ)? func_body
-  | TYPE ID typ_params? EQ typ
-  | shared_pat? sort? CLASS ID? typ_params? pat (COLUMN typ)? class_body
+
+dec_immutable ::=
+    LET pat EQ exp
+
+dec_mutable ::=
+    VAR ID (COLUMN typ)? EQ exp
+
+dec_object ::=
+    sort ID? EQ? obj_body
+
+dec_function ::=
+    shared_pat? FUNC ID? typ_params? pat (COLUMN typ)? func_body
+
+dec_type ::=
+    TYPE ID typ_params? EQ typ
+
+dec_class ::=
+    shared_pat? sort? CLASS ID? typ_params? pat (COLUMN typ)? class_body
 
 //<func_body> ::=
 //    '=' <exp>
@@ -902,7 +896,7 @@ func_body ::=
 //   { <dec-field>;* }         field declarations
 
 obj_body ::=
-    L_CURL (dec_field SEMI)* R_CURL
+    L_CURL SEMI* (dec_field (SEMI+ dec_field)*)? SEMI* R_CURL
 
 //<class-body> ::=             class body
 //    = <id>? <obj-body>       object body, optionally binding <id> to _this_ instance
@@ -912,18 +906,19 @@ class_body ::=
     EQ ID? obj_body
   | obj_body
 
-//<imp> ::=
-//    'import' <id>? '='? <text>
+//<imp> ::=                             imports
+//    import <id>? =? <url>
 
-imp ::= IMPORT ID? EQ? url SEMI
+imp ::= IMPORT ID? EQ? url
 
 url ::=
     TEXT
 
-private imp_list ::= imp imp_list*
-private dec_list ::= dec SEMI dec_list*
+imports ::= SEMI* (imp (SEMI+ imp)*)? SEMI*
+declarations ::= SEMI* (dec (SEMI+ dec)*)? SEMI*
+comments ::= (LINE_COMMENT | BLOCK_COMMENT)*
 
 //<prog> ::=
 //    <list(<imp>, ';')> <list(<dec>, ';')>
 
-prog::= imp_list* dec_list* LINE_COMMENT* BLOCK_COMMENT*
+prog::= imports declarations comments

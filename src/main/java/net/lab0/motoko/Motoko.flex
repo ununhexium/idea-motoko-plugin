@@ -313,6 +313,7 @@ WRAPPING_SUB="-%"
     {SLASH}                   { yybegin(YYINITIAL); return MotokoTypes.SLASH; }
     {STABLE}                  { yybegin(YYINITIAL); return MotokoTypes.STABLE; }
     {STAR}                    { yybegin(YYINITIAL); return MotokoTypes.STAR; }
+    {UNDERSCORE}              { yybegin(YYINITIAL); return MotokoTypes.UNDERSCORE; }
 
 
     // identifiers
