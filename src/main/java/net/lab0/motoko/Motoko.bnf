@@ -613,7 +613,7 @@ exp_conditional ::=
 //parent node:<exp>
 // switch <exp> { (case <pat> <block-or-exp>;)+ }          switch
 exp_switch ::=
-    SWITCH exp L_CURL ( CASE pat block_or_exp SEMI )+ R_CURL
+    SWITCH exp L_CURL ( CASE pat block_or_exp SEMI+ )+ R_CURL
 
 //parent node:<exp>
 // while <exp> <block-or-exp>                              while loop
@@ -749,13 +749,11 @@ vis ::=
 //<stab> ::=                   field stability (actor only)
 //  stable
 //  flexible
-
 stab ::=
     STABLE
   | FLEXIBLE
 
 //<pat> ::=                                      patterns
-
 pat ::=
     pat_underscore
   | pat_variable
@@ -828,7 +826,6 @@ pat_field ::=
 //  <shared-pat>? func <id>? <typ-params>? <pat> (: <typ>)? =? <exp>                       function
 //  type <id> <typ-params>? = <typ>                                                        type
 //  <shared-pat>? <sort>? class <id>? <typ-params>? <pat> (: <typ>)? <class-body>          class
-
 dec ::=
     dec_exp
   | dec_immutable
@@ -862,30 +859,31 @@ dec_class ::=
 //<func_body> ::=
 //    '=' <exp>
 //    <block>
-
 func_body ::=
     EQ exp
   | block
 
 //<obj-body> ::=               object body
 //   { <dec-field>;* }         field declarations
-
 obj_body ::=
     L_CURL SEMI* (dec_field (SEMI+ dec_field)*)? SEMI* R_CURL
 
 //<class-body> ::=             class body
 //    = <id>? <obj-body>       object body, optionally binding <id> to _this_ instance
 //    <obj-body>               object body
-
 class_body ::=
     EQ ID? obj_body
   | obj_body
 
 //<imp> ::=                             imports
 //    import <id>? =? <url>
-
 imp ::= IMPORT ID? EQ? url
 
+//<url> ::=
+//    "<filepath>"                      import module from relative <filepath>.mo
+//    "mo:<package-name>/<filepath>"    import module from package
+//    "canister:<canisterid>"           import external actor by <canisterid>
+//    "canister:<name>"                 import external actor by <name>
 url ::=
     TEXT
 
@@ -902,5 +900,4 @@ comments ::= (LINE_COMMENT | BLOCK_COMMENT)*
 
 //<prog> ::=
 //    <list(<imp>, ';')> <list(<dec>, ';')>
-
 prog::= imports declarations comments
