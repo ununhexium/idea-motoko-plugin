@@ -579,7 +579,11 @@ exp_array_indexing ::=
 //parent node:<exp>
 // <shared-pat>? func <func_exp>                           function expression
 exp_function_expression ::=
-    shared_pat? FUNC "func_exp"  // TODO: what should this contain?
+    shared_pat? FUNC func_exp
+
+// this is a gues sbased on the code samples I found in the base lib
+func_exp ::=
+    ID? typ_params? pat (COLUMN typ)? func_body
 
 //parent node:<exp>
 // <exp> <typ-args>? <exp>                                 function call
