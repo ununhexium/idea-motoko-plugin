@@ -790,7 +790,7 @@ pat_literal ::=
 //parent: <pat>
 //  ( <pat>,* )                                    tuple or brackets
 pat_tuple ::=
-    L_PAREN pat? (COMA pat)* R_PAREN
+    L_PAREN (pat (COMA pat)*)? COMA? R_PAREN
 
 //parent: <pat>
 //  { <pat-field>;* }                              object pattern
