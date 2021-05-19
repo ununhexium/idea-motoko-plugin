@@ -59,13 +59,14 @@ UTF8CONT=[\x80-\xbf]
 //  | ['\xf0'] ['\x90'-'\xbf'] utf8cont utf8cont
 //  | ['\xf4'] ['\x80'-'\x8f'] utf8cont utf8cont
 //  | ['\xf1'-'\xf3'] utf8cont utf8cont utf8cont
-UTF8ENC=  [\xc2-\xdf] {UTF8CONT}
-    | [\xe0] [\xa0-\xbf] {UTF8CONT}
-    | [\xed] [\x80-\x9f] {UTF8CONT}
-    | [\xe1-\xec\xee-\xef] {UTF8CONT} {UTF8CONT}
-    | [\xf0] [\x90-\xbf] {UTF8CONT} {UTF8CONT}
-    | [\xf4] [\x80-\x8f] {UTF8CONT} {UTF8CONT}
-    | [\xf1-\xf3] {UTF8CONT} {UTF8CONT} {UTF8CONT}
+UTF8ENC=
+    [\u0080-\u07c0]
+  | [\u0800-\u0fff]
+  | [\ud000-\ud7ff]
+  | [\ud000-\ud7ff]
+  | [\u1000-\ucfff]
+  | [\ue000-\uffff]
+  // TODO: higher unicode classes with \U instead of \u
 
 //utf8 ::= ascii | utf8enc
 UTF8={ASCII} | {UTF8ENC}
@@ -81,16 +82,18 @@ ESCAPE=["n" "r" "t" "'" \" \\]
 //  | "\\u{" hexnum '}'
 
 CHARACTER=
-    [\x20 \x21 \x23-\x5b \x5d-\x7e]
+// printable ascii, exclude \ and "
+    [\x20-\x21 \x23-\x5b \x5d-\x7e]
   | {UTF8ENC}
   | \\{ESCAPE}
   | \\{HEXDIGIT} {HEXDIGIT}
   | \\"u{" {HEXNUM} "}"
 
 //char := '\'' character '\''
+//CHAR="'" {CHARACTER} "'"
 CHAR="'" {CHARACTER} "'"
 
-TEXT=\" ({CHARACTER})* \"
+TEXT=\" {CHARACTER}* \"
 
 // <id>   ::= Letter (Letter | Digit | _)*
 // Letter ::= A..Z | a..z
@@ -259,8 +262,8 @@ WRAPPING_SUB="-%"
     {LINE_COMMENT}            { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
 
     // literals
-    {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
     {CHAR}                    { yybegin(YYINITIAL); return MotokoTypes.CHAR; }
+    {TEXT}                    { yybegin(YYINITIAL); return MotokoTypes.TEXT; }
     {FLOAT}                   { yybegin(YYINITIAL); return MotokoTypes.FLOAT; }
     {NAT}                     { yybegin(YYINITIAL); return MotokoTypes.NAT; }
 
