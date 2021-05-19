@@ -6,3 +6,13 @@ multi line comment
 2
 3
 */
+
+/*
+nested comment level 0
+/*
+level1
+/*
+level2
+*/
+*/
+*/

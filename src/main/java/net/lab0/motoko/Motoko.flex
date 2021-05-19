@@ -6,6 +6,8 @@ import com.intellij.psi.tree.IElementType;
 import net.lab0.motoko.psi.MotokoTypes;
 import com.intellij.psi.TokenType;
 
+import java.util.LinkedList;
+
 %%
 
 %class MotokoLexer
@@ -13,6 +15,22 @@ import com.intellij.psi.TokenType;
 %unicode
 %function advance
 %type IElementType
+%{
+
+private final LinkedList<Integer> states = new LinkedList<>();
+
+private void yypushstate(int state) {
+    states.addFirst(yystate());
+    yybegin(state);
+}
+
+private void yypopstate() {
+    final int state = states.removeFirst();
+    yybegin(state);
+}
+
+%}
+
 %eof{  return;
 %eof}
 
@@ -20,8 +38,8 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 // TODO: doc comments
 LINE_COMMENT="//"[^\r\n]*
-// TODO: comments nesting
-BLOCK_COMMENT="/*" ~ "*/"
+BLOCK_COMMENT_START="/*"
+BLOCK_COMMENT_END="*/"
 
 // Hacky
 // TODO: Implement the actual definition from https://sdk.dfinity.org/docs/language-guide/language-manual.html#syntax-chars
@@ -165,19 +183,30 @@ WRAPPING_POW="**%"
 WRAPPING_SUB="-%"
 
 %state WAITING_VALUE
+%xstate IN_COMMENT
 
 %%
 
+// https://stackoverflow.com/questions/24666688/jflex-match-nested-comments-as-one-token
+"/*"                           { yypushstate(IN_COMMENT); return MotokoTypes.BLOCK_COMMENT; }
+
+<IN_COMMENT> {
+  {BLOCK_COMMENT_START}        { yypushstate(IN_COMMENT); return MotokoTypes.BLOCK_COMMENT; }
+  [^\*\\/]*                    { return MotokoTypes.BLOCK_COMMENT; }
+  {BLOCK_COMMENT_END}          { yypopstate(); return MotokoTypes.BLOCK_COMMENT; }
+  [\*\\/]                      { return MotokoTypes.BLOCK_COMMENT; }
+  .                            { return MotokoTypes.BAD_CHARACTER; }
+}
+
 <WAITING_VALUE> {
     {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-    {WHITE_SPACE}+                                   { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+    {WHITE_SPACE}+                                { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 }
 
 
 <YYINITIAL> {
     // comments
     {LINE_COMMENT}            { yybegin(YYINITIAL); return MotokoTypes.LINE_COMMENT; }
-    {BLOCK_COMMENT}           { yybegin(YYINITIAL); return MotokoTypes.BLOCK_COMMENT; }
 
     // literals
     {CHAR}                    { yybegin(YYINITIAL); return MotokoTypes.CHAR; }

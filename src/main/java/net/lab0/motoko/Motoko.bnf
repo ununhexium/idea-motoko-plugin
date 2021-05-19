@@ -921,4 +921,4 @@ comments ::= (LINE_COMMENT | BLOCK_COMMENT)*
 //<prog> ::=
 //    <list(<imp>, ';')> <list(<dec>, ';')>
 
-prog::= imports declarations comments
+prog::= imports declarations comments BLOCK_COMMENT*
