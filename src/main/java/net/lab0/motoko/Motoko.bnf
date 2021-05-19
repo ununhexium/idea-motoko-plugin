@@ -361,89 +361,89 @@ exp_gte ::=
 //parent node:<exp>
 // <exp> <relop> <exp>                                     binary relational operator
 private binop_power_group ::=
-    exp_exponentiation
-  | exp_wrapping_exponentiation
+    exp_binop_exponentiation
+  | exp_binop_wrapping_exponentiation
 
-exp_exponentiation ::=
-    exp POW exp
+exp_binop_exponentiation ::=
+    exp POW exp { rightAssociative=true }
 
-exp_wrapping_exponentiation ::=
-    exp WRAPPING_POW exp
+exp_binop_wrapping_exponentiation ::=
+    exp WRAPPING_POW exp { rightAssociative=true }
 
 private binop_shift_group ::=
-    exp_left_shift
-  | exp_right_shift
-  | exp_left_rotate
-  | exp_right_rotate
+    exp_binop_left_shift
+  | exp_binop_right_shift
+  | exp_binop_left_rotate
+  | exp_binop_right_rotate
 
-exp_left_shift ::=
+exp_binop_left_shift ::=
     exp L_SHIFT exp
 
-exp_right_shift ::=
+exp_binop_right_shift ::=
     exp R_SHIFT exp
 
-exp_left_rotate::=
+exp_binop_left_rotate::=
     exp L_ROTATE exp
 
-exp_right_rotate::=
+exp_binop_right_rotate::=
     exp R_ROTATE exp
 
 private binop_bitwise_xor_group::=
-    exp_xor
+    exp_binop_xor
 
-exp_xor ::=
+exp_binop_xor ::=
     exp CARRET exp
 
 private binop_bitwise_and_group::=
-    exp_bitwise_and
+    exp_binop_bitwise_and
 
-exp_bitwise_and ::=
+exp_binop_bitwise_and ::=
     exp AMPERSAND exp
 
 private binop_bitwise_or_group ::=
-    exp_bitwise_or
+    exp_binop_bitwise_or
 
-exp_bitwise_or ::=
+exp_binop_bitwise_or ::=
     exp PIPE exp
 
 private binop_multiply_group ::=
-    exp_multiply
-  | exp_divide
-  | exp_modulo
-  | exp_wrapping_multiply
+    exp_binop_multiply
+  | exp_binop_divide
+  | exp_binop_modulo
+  | exp_binop_wrapping_multiply
 
-exp_multiply ::=
+exp_binop_multiply ::=
     exp STAR exp
 
-exp_divide ::=
+exp_binop_divide ::=
     exp SLASH exp
 
-exp_modulo ::=
+exp_binop_modulo ::=
     exp PERCENT exp
 
-exp_wrapping_multiply ::=
+exp_binop_wrapping_multiply ::=
     exp WRAPPING_MUL exp
 
 private binop_add_group ::=
-    exp_plus
-  | exp_minus
-  | exp_wrapping_plus
-  | exp_wrapping_minus
-  | exp_concat
+    exp_binop_plus
+  | exp_binop_minus
+  | exp_binop_wrapping_plus
+  | exp_binop_wrapping_minus
+  | exp_binop_concat
 
-exp_minus ::=
-    exp MINUS exp
-
-exp_plus ::=
+exp_binop_plus ::=
     exp PLUS exp
 
-exp_wrapping_minus ::=
+exp_binop_minus ::=
+    exp MINUS exp
+
+exp_binop_wrapping_minus ::=
     exp WRAPPING_ADD exp
 
-exp_wrapping_plus ::=
+exp_binop_wrapping_plus ::=
     exp WRAPPING_SUB exp
 
-exp_concat ::=
+exp_binop_concat ::=
     exp HASH exp
 
 //parent node:<exp>
@@ -509,61 +509,61 @@ private exp_update ::=
   | exp_binassign_in_place_concatenation
 
 exp_binassign_in_place_update ::=
-    exp IN_PLACE_UPDATE exp
+    exp IN_PLACE_UPDATE exp { rightAssociative=true }
 
 exp_binassign_in_place_add ::=
-    exp IN_PLACE_ADD exp
+    exp IN_PLACE_ADD exp { rightAssociative=true }
 
 exp_binassign_in_place_subtract ::=
-    exp IN_PLACE_SUBTRACT exp
+    exp IN_PLACE_SUBTRACT exp { rightAssociative=true }
 
 exp_binassign_in_place_multiply ::=
-    exp IN_PLACE_MULTIPLY exp
+    exp IN_PLACE_MULTIPLY exp { rightAssociative=true }
 
 exp_binassign_in_place_divide ::=
-    exp IN_PLACE_DIVIDE exp
+    exp IN_PLACE_DIVIDE exp { rightAssociative=true }
 
 exp_binassign_in_place_modulo ::=
-    exp IN_PLACE_MODULO exp
+    exp IN_PLACE_MODULO exp { rightAssociative=true }
 
 exp_binassign_in_place_exponentiation ::=
-    exp IN_PLACE_EXPONENTIATION exp
+    exp IN_PLACE_EXPONENTIATION exp { rightAssociative=true }
 
 exp_binassign_in_place_logical_and ::=
-    exp IN_PLACE_LOGICAL_AND exp
+    exp IN_PLACE_LOGICAL_AND exp { rightAssociative=true }
 
 exp_binassign_in_place_logical_or ::=
-    exp IN_PLACE_LOGICAL_OR exp
+    exp IN_PLACE_LOGICAL_OR exp { rightAssociative=true }
 
 exp_binassign_in_place_exclusive_or ::=
-    exp IN_PLACE_EXCLUSIVE_OR exp
+    exp IN_PLACE_EXCLUSIVE_OR exp { rightAssociative=true }
 
 exp_binassign_in_place_shift_left ::=
-    exp IN_PLACE_SHIFT_LEFT exp
+    exp IN_PLACE_SHIFT_LEFT exp { rightAssociative=true }
 
 exp_binassign_in_place_shift_right ::=
-    exp IN_PLACE_SHIFT_RIGHT exp
+    exp IN_PLACE_SHIFT_RIGHT exp { rightAssociative=true }
 
 exp_binassign_in_place_rotate_left ::=
-    exp IN_PLACE_ROTATE_LEFT exp
+    exp IN_PLACE_ROTATE_LEFT exp { rightAssociative=true }
 
 exp_binassign_in_place_rotate_right ::=
-    exp IN_PLACE_ROTATE_RIGHT exp
+    exp IN_PLACE_ROTATE_RIGHT exp { rightAssociative=true }
 
 exp_binassign_in_place_add_wrap_on_overflow ::=
-    exp IN_PLACE_ADD_WRAP_ON_OVERFLOW exp
+    exp IN_PLACE_ADD_WRAP_ON_OVERFLOW exp { rightAssociative=true }
 
 exp_binassign_in_place_subtract_wrap_on_overflow ::=
-    exp IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW exp
+    exp IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW exp { rightAssociative=true }
 
 exp_binassign_in_place_multiply_wrap_on_overflow ::=
-    exp IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW exp
+    exp IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW exp { rightAssociative=true }
 
 exp_binassign_in_place_exponentiation_wrap_on_overflow ::=
-    exp IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW exp
+    exp IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW exp { rightAssociative=true }
 
 exp_binassign_in_place_concatenation ::=
-    exp IN_PLACE_CONCATENATION exp
+    exp IN_PLACE_CONCATENATION exp { rightAssociative=true }
 
 //parent node:<exp>
 // [ var? <exp>,* ]                                        array
