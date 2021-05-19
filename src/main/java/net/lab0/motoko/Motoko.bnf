@@ -613,8 +613,12 @@ exp_array_indexing ::=
 
 //parent node:<exp>
 // <exp> <typ-args>? <exp>                                 function call
+/**
+Note: here, forcing the presence of parentheses
+as it would otherwise run in an endless loop
+ */
 exp_function_call ::=
-    exp typ_args exp
+    exp typ_args? L_PAREN exp? (COMA exp)* R_PAREN
 
 //parent node:<exp>
 // not <exp>                                               negation

@@ -65,7 +65,6 @@ ARROW="->"
 ASSERT="assert"
 ASYNC="async"      // TODO: not in the keywords list?
 AWAIT="await"
-EXCLAMATION="!"
 BREAK="break"
 CARRET="^"
 CASE="case"
@@ -77,52 +76,53 @@ CONTINUE="continue"
 DEBUG="debug"
 DEBUG_SHOW="debug_show"
 DO="do"             // TODO: not in keywords?
-EQEQ="=="
-EQ="="
 ELSE="else"
+EQ="="
+EQEQ="=="
+EXCLAMATION="!"
 FALSE="false"
 FLEXIBLE="flexible"
 FOR="for"
 FUNC="func"
+GT=" > "
 GTE=">="
 HASH="#"
 IF="if"
 IGNORE="ignore"
+IMPORT="import"
 IN="in"
-IN_PLACE_UPDATE=":="
 IN_PLACE_ADD="+="
-IN_PLACE_SUBTRACT="-="
-IN_PLACE_MULTIPLY="*="
+IN_PLACE_ADD_WRAP_ON_OVERFLOW="+%="
+IN_PLACE_CONCATENATION="#="
 IN_PLACE_DIVIDE="/="
-IN_PLACE_MODULO="%="
+IN_PLACE_EXCLUSIVE_OR="^="
 IN_PLACE_EXPONENTIATION="**="
+IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW="**%="
 IN_PLACE_LOGICAL_AND="&="
 IN_PLACE_LOGICAL_OR="|="
-IN_PLACE_EXCLUSIVE_OR="^="
-IN_PLACE_SHIFT_LEFT="<<="
-IN_PLACE_SHIFT_RIGHT=">>="
+IN_PLACE_MODULO="%="
+IN_PLACE_MULTIPLY="*="
+IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW="*%="
 IN_PLACE_ROTATE_LEFT="<<>="
 IN_PLACE_ROTATE_RIGHT="<>>="
-IN_PLACE_ADD_WRAP_ON_OVERFLOW="+%="
+IN_PLACE_SHIFT_LEFT="<<="
+IN_PLACE_SHIFT_RIGHT=">>="
+IN_PLACE_SUBTRACT="-="
 IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW="-%="
-IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW="*%="
-IN_PLACE_EXPONENTIATION_WRAP_ON_OVERFLOW="**%="
-IN_PLACE_CONCATENATION="#="
-IMPORT="import"
+IN_PLACE_UPDATE=":="
+LABEL="label"
+LET="let"
+LOOP="loop"
+LT=" < "
+LTE="<="
 L_ANGLE="<"
 L_CURL="{"
 L_PAREN="("
 L_ROTATE="<<>"
 L_SHIFT="<<"
 L_SQUARE="["
-LABEL="label"
-LET="let"
-LOOP="loop"
-LT=" < "
-LTE="<="
 MINUS="-"
 MODULE="module"
-GT=" > "
 NEQ="!="
 NOT="not"
 NULL="null"
@@ -137,13 +137,13 @@ PRIVATE="private"
 PUBLIC="public"
 QUERY="query"
 QUESTION="?"
+RETURN="return"
 R_ANGLE=">"
 R_CURL="}"
 R_PAREN=")"
 R_ROTATE="<>>"
 R_SHIFT=" >>"
 R_SQUARE="]"
-RETURN="return"
 SEMI=";"
 SHARED="shared"
 SLASH="/"
@@ -160,18 +160,19 @@ UNDERSCORE="_"
 VAR="var"
 WHILE="while"
 WRAPPING_ADD="+%"
-WRAPPING_SUB="-%"
 WRAPPING_MUL="*%"
 WRAPPING_POW="**%"
+WRAPPING_SUB="-%"
 
 %state WAITING_VALUE
 
 %%
 
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<WAITING_VALUE> {
+    {CRLF}({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+    {WHITE_SPACE}+                                   { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+}
 
-// special cases for the operators containing a space
-<WAITING_VALUE> {WHITE_SPACE}+ / !("< " | "> " | ">>")            { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
 
 <YYINITIAL> {
     // comments
@@ -223,6 +224,7 @@ WRAPPING_POW="**%"
     {WHILE}                   { yybegin(YYINITIAL); return MotokoTypes.WHILE; }
 
     // symbols
+    // TODO: could be simplified by using binop + '=' in the parser
     {IN_PLACE_UPDATE}                               { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_UPDATE; }
     {IN_PLACE_ADD}                                  { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ADD; }
     {IN_PLACE_SUBTRACT}                             { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SUBTRACT; }
@@ -233,10 +235,12 @@ WRAPPING_POW="**%"
     {IN_PLACE_LOGICAL_AND}                          { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_LOGICAL_AND; }
     {IN_PLACE_LOGICAL_OR}                           { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_LOGICAL_OR; }
     {IN_PLACE_EXCLUSIVE_OR}                         { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_EXCLUSIVE_OR; }
-    {IN_PLACE_SHIFT_LEFT}                           { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SHIFT_LEFT; }
-    {IN_PLACE_SHIFT_RIGHT}                          { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SHIFT_RIGHT; }
-    {IN_PLACE_ROTATE_LEFT}                          { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ROTATE_LEFT; }
-    {IN_PLACE_ROTATE_RIGHT}                         { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ROTATE_RIGHT; }
+
+     // Hacks, see GT / LT
+    " "*{IN_PLACE_SHIFT_LEFT}                       { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SHIFT_LEFT; }
+    " "*{IN_PLACE_SHIFT_RIGHT}                      { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SHIFT_RIGHT; }
+    " "*{IN_PLACE_ROTATE_LEFT}                      { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ROTATE_LEFT; }
+    " "*{IN_PLACE_ROTATE_RIGHT}                     { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ROTATE_RIGHT; }
     {IN_PLACE_ADD_WRAP_ON_OVERFLOW}                 { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_ADD_WRAP_ON_OVERFLOW; }
     {IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW}            { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_SUBTRACT_WRAP_ON_OVERFLOW; }
     {IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW}            { yybegin(YYINITIAL); return MotokoTypes.IN_PLACE_MULTIPLY_WRAP_ON_OVERFLOW; }
@@ -248,10 +252,11 @@ WRAPPING_POW="**%"
     {WRAPPING_POW}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_POW; }
     {WRAPPING_SUB}             { yybegin(YYINITIAL); return MotokoTypes.WRAPPING_SUB; }
 
-    {L_ROTATE}                { yybegin(YYINITIAL); return MotokoTypes.L_ROTATE; }
+    " "*{L_ROTATE}                { yybegin(YYINITIAL); return MotokoTypes.L_ROTATE; }
     {R_ROTATE}                { yybegin(YYINITIAL); return MotokoTypes.R_ROTATE; }
 
-    {L_SHIFT}                 { yybegin(YYINITIAL); return MotokoTypes.L_SHIFT; }
+    // Hack, see GT / LT
+    " "*{L_SHIFT}                 { yybegin(YYINITIAL); return MotokoTypes.L_SHIFT; }
     {R_SHIFT}                 { yybegin(YYINITIAL); return MotokoTypes.R_SHIFT; }
 
     {POW}                     { yybegin(YYINITIAL); return MotokoTypes.POW; }
@@ -261,8 +266,19 @@ WRAPPING_POW="**%"
     // comparators
     {GTE}                     { yybegin(YYINITIAL); return MotokoTypes.GTE; }
     {LTE}                     { yybegin(YYINITIAL); return MotokoTypes.LTE; }
-    {GT}                      { yybegin(YYINITIAL); return MotokoTypes.GT; }
-    {LT}                      { yybegin(YYINITIAL); return MotokoTypes.LT; }
+    /*
+     /!\ Hack /!\
+
+     JFlex will always use the longest match.
+     Therefore we also take all the spaces arround the symbol to have a longer match than the whitespace macro.
+
+     This is necessary to distinguish between an angle bracket that means less/more and
+     an angle bracket that means generic typing.
+
+     TODO: also grab tabs?
+     */
+    " "*{GT}" "*              { yybegin(YYINITIAL); return MotokoTypes.GT; }
+    " "*{LT}" "*              { yybegin(YYINITIAL); return MotokoTypes.LT; }
     {NEQ}                     { yybegin(YYINITIAL); return MotokoTypes.NEQ; }
     {EQ}                      { yybegin(YYINITIAL); return MotokoTypes.EQ; }
 
