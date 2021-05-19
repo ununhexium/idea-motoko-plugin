@@ -574,7 +574,7 @@ exp_array ::=
 //parent node:<exp>
 // <exp> [ <exp> ]                                         array indexing
 exp_array_indexing ::=
-    exp L_SQUARE exp R_SQUARE
+    exp L_SQUARE (exp|&R_SQUARE) R_SQUARE
 
 //parent node:<exp>
 // <shared-pat>? func <func_exp>                           function expression
@@ -617,7 +617,10 @@ exp_conditional ::=
 //parent node:<exp>
 // switch <exp> { (case <pat> <block-or-exp>;)+ }          switch
 exp_switch ::=
-    SWITCH exp L_CURL ( CASE pat block_or_exp SEMI+ )+ R_CURL
+    SWITCH exp L_CURL switch_case (SEMI switch_case)* SEMI?  R_CURL
+
+switch_case ::=
+    CASE pat block_or_exp
 
 //parent node:<exp>
 // while <exp> <block-or-exp>                              while loop
@@ -733,7 +736,7 @@ exp_field ::=
 //<block> ::=
 //    '{' <list(<dec>, ';')> '}'
 block ::=
-    L_CURL SEMI* (dec (SEMI+ dec)*)? SEMI* R_CURL
+    L_CURL (dec (SEMI dec)*)? SEMI? R_CURL
 
 //<dec-field> ::=              object declaration fields
 //  <vis>? <stab>? <dec>       field
@@ -898,10 +901,10 @@ lib ::=
     imports MODULE ID? obj_body
   | imports shared_pat? ACTOR CLASS ID typ_params? pat (COLUMN typ)? class_body
 
-imports ::= SEMI* (imp (SEMI+ imp)*)? SEMI*
-declarations ::= SEMI* (DOC_COMMENT? dec (SEMI+ DOC_COMMENT? dec)*)? SEMI*
+imports ::= (imp (SEMI imp)*)? SEMI
+declarations ::= (DOC_COMMENT? dec (SEMI DOC_COMMENT? dec)*)? SEMI?
 comments ::= (LINE_COMMENT | BLOCK_COMMENT)*
 
 //<prog> ::=
 //    <list(<imp>, ';')> <list(<dec>, ';')>
-prog::= imports declarations comments
+prog::= imports? declarations? comments?

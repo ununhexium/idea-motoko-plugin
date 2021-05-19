@@ -13,3 +13,5 @@ actor Holder {
   public query func f() {};
   public func f() {};
 };
+
+func f() = object {};

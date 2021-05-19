@@ -8,3 +8,8 @@ switch (a) {
     b;
   };
 };
+
+
+switch (a) {
+  case (null) {} // no trailing semi
+};

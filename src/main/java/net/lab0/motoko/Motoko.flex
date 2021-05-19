@@ -100,7 +100,10 @@ TEXT=\" {CHARACTER}* \"
 // Digit  ::= 0..9
 LETTER=[a-zA-Z]
 DIGIT=[0-9]
-ID={LETTER} ({LETTER}|{DIGIT}|{UNDERSCORE})*
+ID=
+    {LETTER} ({LETTER}|{DIGIT}|{UNDERSCORE})*
+// Found cases in the base lib with identifiers starting with underscore
+  | {UNDERSCORE} ({LETTER}|{DIGIT}|{UNDERSCORE})+
 
 //hexdigit ::= ['0'-'9''a'-'f''A'-'F']
 HEXDIGIT=[[0-9]||[a-f]||[A-F]]

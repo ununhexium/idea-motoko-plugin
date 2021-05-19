@@ -1,6 +1,7 @@
 build/
 src/main/gen/
 motoko_samples/src/motoko/samples/
+motoko_samples/__.mo
 
 
 jflex-1.7.0-2.jar
