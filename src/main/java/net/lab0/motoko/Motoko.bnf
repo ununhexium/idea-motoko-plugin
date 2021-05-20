@@ -48,6 +48,20 @@ typ_param ::=
   | ID
 
 //<typ> ::=                                     type expressions
+//  <path> <typ-args>?                            constructor
+//  <sort>? { <typ-field>;* }                     object
+//  { <typ-tag>;* }                               variant
+//  { # }                                         empty variant
+//  [ var? <typ> ]                                array
+//  Null                                          null type
+//  ? <typ>                                       option
+//  <shared>? <typ-params>? <typ> -> <typ>        function
+//  async <typ>                                   future
+//  ( ((<id> :)? <typ>),* )                       tuple
+//  Any                                           top
+//  None                                          bottom
+//  Error                                         errors/exceptions
+//  ( type )                                      parenthesized type
 typ ::=
     typ_constructor
   | typ_object
@@ -107,10 +121,10 @@ private typ_function ::=
  | typ_function_shared
 
 typ_function_non_shared ::=
-    typ ARROW typ
+    typ_params typ ARROW typ
 
 typ_function_shared ::=
-    shared_prefix typ ARROW typ
+    shared_prefix typ_params typ ARROW typ
 
 //  <shared> ::=                                 shared function type qualifier
 //    shared query?
@@ -617,7 +631,7 @@ exp_conditional ::=
 //parent node:<exp>
 // switch <exp> { (case <pat> <block-or-exp>;)+ }          switch
 exp_switch ::=
-    SWITCH exp L_CURL switch_case (SEMI switch_case)* SEMI?  R_CURL
+    SWITCH exp L_CURL switch_case? (SEMI switch_case)* SEMI?  R_CURL
 
 switch_case ::=
     CASE pat block_or_exp
