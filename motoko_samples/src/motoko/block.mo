@@ -1,5 +1,3 @@
 do {
-    ;;
-    ;; let columnsEverywhere = null;;;;
-    ;;;
+    let columnsEverywhere = null;
 };

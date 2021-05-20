@@ -22,8 +22,8 @@ object WithFields {
 
 // object body
 
-actor CanHaveSeveralSemis{
-    func f(){};;;;;;;;;;;
+actor CanHaveSemi{
+    func f(){};
 };
 
 actor LastSemiOptional {
