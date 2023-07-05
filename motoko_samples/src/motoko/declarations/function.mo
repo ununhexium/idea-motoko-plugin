@@ -15,3 +15,4 @@ actor Holder {
 };
 
 func f() = object {};
+
